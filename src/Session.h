@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <vector>
 #include <libtorrent/alert_types.hpp>
@@ -16,7 +17,7 @@ public:
 
   void push(const std::shared_ptr<Torrent>&);
   void push(const std::vector<std::shared_ptr<Torrent>>&);
-  int handle();
+  int handle(const std::function<void(void)>& callback);
 
 private:
   std::vector<std::shared_ptr<Torrent>> queue;

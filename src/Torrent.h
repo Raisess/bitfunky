@@ -21,7 +21,8 @@ public:
   Flag flag;
   uint8_t progress = 0;
   uint16_t peers = 0;
-  uint16_t download_rate = 0;
+  uint32_t download_rate = 0;
+  uint32_t total_downloaded = 0;
 };
 
 class Torrent {

@@ -28,7 +28,7 @@ void AG::Session::push(const std::vector<std::shared_ptr<Torrent>>& torrents) {
   }
 }
 
-int AG::Session::handle() {
+int AG::Session::handle(const std::function<void(void)>& callback) {
   try {
     while (true) {
       std::vector<lt::alert*> lt_alerts;
@@ -47,15 +47,18 @@ int AG::Session::handle() {
 
           for (size_t i = 0; i < state->status.size(); i++) {
             auto status = state->status[i];
-            std::cout << "ID: " << i << std::endl;
-            std::cout << "Torrent: " << this->queue[i]->get_alias() << std::endl;
-            std::cout << "Downloaded: " << status.progress_ppm / 10000 << std::endl;
-            std::cout << "Peers: " << status.num_peers << std::endl;
+
+            auto torrent = this->queue[i];
+            torrent->status.progress = status.progress_ppm / 10000;
+            torrent->status.total_downloaded = status.total_done / 1000;
+            torrent->status.download_rate = status.download_payload_rate / 1000;
+            torrent->status.peers = status.num_peers;
           }
         }
       }
 
       this->lt_session->post_torrent_updates();
+      callback();
       std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
