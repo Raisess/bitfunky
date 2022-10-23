@@ -16,7 +16,6 @@ public:
 
   void push(const std::shared_ptr<Torrent>&);
   void push(const std::vector<std::shared_ptr<Torrent>>&);
-  void pop();
   int handle();
 
 private:
