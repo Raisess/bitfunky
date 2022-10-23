@@ -1,4 +1,4 @@
-CXX=g++
+CXX=clang++ -std=c++14
 
 SRC_DIR=./src
 SRC=$(SRC_DIR)/main.cpp
