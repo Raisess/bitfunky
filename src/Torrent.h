@@ -26,14 +26,22 @@ public:
 
 class Torrent {
 public:
-  static std::shared_ptr<Torrent> Create(const std::string& magnet_uri);
-  static std::shared_ptr<Torrent> Create(const std::string& magnet_uri, const std::string& output);
+  static std::shared_ptr<Torrent> Create(
+    const std::string& alias,
+    const std::string& magnet_uri
+  );
+  static std::shared_ptr<Torrent> Create(
+    const std::string& alias,
+    const std::string& magnet_uri,
+    const std::string& output
+  );
 
   TorrentStatus status;
 
-  Torrent(const std::string& magnet_uri, const std::string& output);
+  Torrent(const std::string& alias, const std::string& magnet_uri, const std::string& output);
   ~Torrent();
 
+  const std::string get_alias() const;
   const std::string get_magnet_uri() const;
   const std::string get_output() const;
 
@@ -41,6 +49,7 @@ public:
   lt::add_torrent_params get_lt_params() const;
 
 private:
+  std::string alias;
   std::string magnet_uri;
   std::string output;
 
