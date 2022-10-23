@@ -14,8 +14,9 @@ int main(int argc, char* argv[]) {
 
   return session.handle([&]() {
     std::cout << "Torrent: " << torrent->get_alias() << std::endl;
+    std::cout << "--> State: " << torrent->status.state << std::endl;
     std::cout << "--> Peers: " << torrent->status.peers << std::endl;
-    std::cout << "--> Progress: " << unsigned(torrent->status.progress) << " %" << std::endl;
+    std::cout << "--> Progress: " << unsigned(torrent->status.progress) << "%" << std::endl;
     std::cout << "--> Downloaded: " << unsigned(torrent->status.total_downloaded) << " kb" << std::endl;
     std::cout << "--> Download rate: " << unsigned(torrent->status.download_rate) << " kb/s" << std::endl;
   });

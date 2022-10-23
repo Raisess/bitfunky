@@ -4,21 +4,21 @@
 #include <iostream>
 #include <memory>
 #include <libtorrent/add_torrent_params.hpp>
-#include <libtorrent/magnet_uri.hpp>
 
 namespace AG {
 
 class TorrentStatus {
 public:
-  enum Flag {
+  enum State {
     CREATED = 0,
     ACTIVE,
     PAUSED,
     FINISHED,
+    SEEDING,
     FAILED,
   };
 
-  Flag flag;
+  State state;
   uint8_t progress = 0;
   uint16_t peers = 0;
   uint32_t download_rate = 0;
@@ -46,7 +46,6 @@ public:
   const std::string get_magnet_uri() const;
   const std::string get_output() const;
 
-  // libtorrent impl
   lt::add_torrent_params get_lt_params() const;
 
 private:
@@ -54,7 +53,6 @@ private:
   std::string magnet_uri;
   std::string output;
 
-  // libtorrent impl
   lt::add_torrent_params lt_attach_params;
 };
 

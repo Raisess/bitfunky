@@ -1,6 +1,8 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <libtorrent/alert_types.hpp>
+#include <libtorrent/session_params.hpp>
 #include "Session.h"
 
 AG::Session::Session() {
@@ -17,7 +19,7 @@ AG::Session::Session() {
 AG::Session::~Session() {}
 
 void AG::Session::push(const std::shared_ptr<Torrent>& torrent) {
-  std::cout << "Torrent added to session: " << torrent->get_magnet_uri() << std::endl;
+  torrent->status.state = TorrentStatus::State::ACTIVE;
   this->lt_session->add_torrent(torrent->get_lt_params());
   this->queue.push_back(torrent);
 }
@@ -35,9 +37,7 @@ int AG::Session::handle(const std::function<void(void)>& callback) {
       this->lt_session->pop_alerts(&lt_alerts);
 
       for (auto alert : lt_alerts) {
-        // End status check
-        if (lt::alert_cast<lt::torrent_finished_alert>(alert)
-            || lt::alert_cast<lt::torrent_error_alert>(alert)) {
+        if (lt::alert_cast<lt::torrent_error_alert>(alert)) {
           break;
         }
 
@@ -46,13 +46,39 @@ int AG::Session::handle(const std::function<void(void)>& callback) {
           if (state->status.empty()) continue;
 
           for (size_t i = 0; i < state->status.size(); i++) {
-            auto status = state->status[i];
-
             auto torrent = this->queue[i];
-            torrent->status.progress = status.progress_ppm / 10000;
-            torrent->status.total_downloaded = status.total_done / 1000;
-            torrent->status.download_rate = status.download_payload_rate / 1000;
-            torrent->status.peers = status.num_peers;
+
+            switch (torrent->status.state) {
+              case TorrentStatus::State::ACTIVE:
+                {
+                  auto status = state->status[i];
+                  if (status.is_finished) {
+                    torrent->status.state = TorrentStatus::State::FINISHED;
+                  }
+
+                  torrent->status.progress = status.progress_ppm / 10000;
+                  torrent->status.total_downloaded = status.total_done / 1000;
+                  torrent->status.download_rate = status.download_payload_rate / 1000;
+                  torrent->status.peers = status.num_peers;
+                }
+                break;
+              case TorrentStatus::State::FINISHED:
+                {
+                  auto status = state->status[i];
+                  if (status.is_seeding) {
+                    torrent->status.state = TorrentStatus::State::SEEDING;
+                  }
+                }
+                break;
+              // TODO: Sedding and paused state status update
+              case TorrentStatus::State::SEEDING:
+              case TorrentStatus::State::PAUSED:
+                break;
+              // Do nothing states
+              case TorrentStatus::State::CREATED:
+              case TorrentStatus::State::FAILED:
+                break;
+            }
           }
         }
       }

@@ -3,9 +3,7 @@
 #include <functional>
 #include <memory>
 #include <vector>
-#include <libtorrent/alert_types.hpp>
 #include <libtorrent/session.hpp>
-#include <libtorrent/session_params.hpp>
 #include "Torrent.h"
 
 namespace AG {
@@ -22,7 +20,6 @@ public:
 private:
   std::vector<std::shared_ptr<Torrent>> queue;
 
-  // libtorrent impl
   std::unique_ptr<lt::session> lt_session = nullptr;
 };
 
