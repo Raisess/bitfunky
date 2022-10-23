@@ -45,9 +45,13 @@ int AG::Session::handle() {
         if (state) {
           if (state->status.empty()) continue;
 
-          auto status = state->status[0];
-          std::cout << "Downloaded: " << status.progress_ppm / 10000 << std::endl;
-          std::cout << "Peers: " << status.num_peers << std::endl;
+          for (size_t i = 0; i < state->status.size(); i++) {
+            auto status = state->status[i];
+            std::cout << "ID: " << i << std::endl;
+            std::cout << "Torrent: " << this->queue[i]->get_alias() << std::endl;
+            std::cout << "Downloaded: " << status.progress_ppm / 10000 << std::endl;
+            std::cout << "Peers: " << status.num_peers << std::endl;
+          }
         }
       }
 
