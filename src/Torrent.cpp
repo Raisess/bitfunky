@@ -15,6 +15,7 @@ AG::Torrent::Torrent(const std::string& magnet_uri, const std::string& output)
   : magnet_uri(magnet_uri), output(output) {
   this->lt_attach_params = lt::parse_magnet_uri(magnet_uri);
   this->lt_attach_params.save_path = output;
+  this->status.flag = TorrentStatus::Flag::CREATED;
 }
 
 AG::Torrent::~Torrent() {}
@@ -28,6 +29,6 @@ const std::string AG::Torrent::get_output() const {
 }
 
 // libtorrent impl
-lt::add_torrent_params AG::Torrent::get_attach_params() const {
+lt::add_torrent_params AG::Torrent::get_lt_params() const {
   return this->lt_attach_params;
 }
