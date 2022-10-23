@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <memory>
+#include <libtorrent/add_torrent_params.hpp>
+#include <libtorrent/magnet_uri.hpp>
 
 namespace AG {
 
@@ -16,9 +18,15 @@ public:
   const std::string get_magnet_uri() const;
   const std::string get_output() const;
 
+  // libtorrent impl
+  lt::add_torrent_params get_attach_params() const;
+
 private:
   std::string magnet_uri;
   std::string output;
+
+  // libtorrent impl
+  lt::add_torrent_params lt_attach_params;
 };
 
 }
