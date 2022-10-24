@@ -3,9 +3,9 @@
 #include <thread>
 #include <libtorrent/alert_types.hpp>
 #include <libtorrent/session_params.hpp>
-#include "Session.h"
+#include "BitTorrentSession.h"
 
-AG::Session::Session() {
+AG::BitTorrentSession::BitTorrentSession() : Session() {
   lt::settings_pack lt_settings;
   lt_settings.set_int(
     lt::settings_pack::alert_mask,
@@ -16,21 +16,21 @@ AG::Session::Session() {
   this->lt_session = std::make_unique<lt::session>(lt_settings);
 }
 
-AG::Session::~Session() {}
+AG::BitTorrentSession::~BitTorrentSession() {}
 
-void AG::Session::push(const std::shared_ptr<Torrent>& torrent) {
-  torrent->status.state = TorrentStatus::State::ACTIVE;
+void AG::BitTorrentSession::push(const std::shared_ptr<BitTorrentFile>& torrent) {
+  torrent->status.state = BitTorrentFileStatus::State::ACTIVE;
   this->lt_session->add_torrent(torrent->get_lt_params());
   this->queue.push_back(torrent);
 }
 
-void AG::Session::push(const std::vector<std::shared_ptr<Torrent>>& torrents) {
+void AG::BitTorrentSession::push(const std::vector<std::shared_ptr<BitTorrentFile>>& torrents) {
   for (auto torrent : torrents) {
     this->push(torrent);
   }
 }
 
-int AG::Session::handle(const std::function<void(void)>& callback) {
+int AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
   try {
     while (true) {
       std::vector<lt::alert*> lt_alerts;
@@ -49,11 +49,11 @@ int AG::Session::handle(const std::function<void(void)>& callback) {
             auto torrent = this->queue[i];
 
             switch (torrent->status.state) {
-              case TorrentStatus::State::ACTIVE:
+              case BitTorrentFileStatus::State::ACTIVE:
                 {
                   auto status = state->status[i];
                   if (status.is_finished) {
-                    torrent->status.state = TorrentStatus::State::FINISHED;
+                    torrent->status.state = BitTorrentFileStatus::State::FINISHED;
                   }
 
                   torrent->status.progress = status.progress_ppm / 10000;
@@ -62,21 +62,21 @@ int AG::Session::handle(const std::function<void(void)>& callback) {
                   torrent->status.peers = status.num_peers;
                 }
                 break;
-              case TorrentStatus::State::FINISHED:
+              case BitTorrentFileStatus::State::FINISHED:
                 {
                   auto status = state->status[i];
                   if (status.is_seeding) {
-                    torrent->status.state = TorrentStatus::State::SEEDING;
+                    torrent->status.state = BitTorrentFileStatus::State::SEEDING;
                   }
                 }
                 break;
               // TODO: Sedding and paused state status update
-              case TorrentStatus::State::SEEDING:
-              case TorrentStatus::State::PAUSED:
+              case BitTorrentFileStatus::State::SEEDING:
+              case BitTorrentFileStatus::State::PAUSED:
                 break;
               // Do nothing states
-              case TorrentStatus::State::CREATED:
-              case TorrentStatus::State::FAILED:
+              case BitTorrentFileStatus::State::CREATED:
+              case BitTorrentFileStatus::State::FAILED:
                 break;
             }
           }
@@ -88,7 +88,6 @@ int AG::Session::handle(const std::function<void(void)>& callback) {
       std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
-    std::cout << "Finished!" << std::endl;
     return 0;
   } catch (std::exception& err) {
     std::cerr << "Error: " << err.what() << std::endl;
