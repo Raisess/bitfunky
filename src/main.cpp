@@ -2,22 +2,31 @@
 #include "Session.h"
 #include "Torrent.h"
 
-// Sintel, a free, Creative Commons movie
-#define ALIAS "Sintel - Open Movie"
-#define MAGNET_URI "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
-
 int main(int argc, char* argv[]) {
   AG::Session session;
 
-  auto torrent = AG::Torrent::Create(ALIAS, MAGNET_URI);
-  session.push(torrent);
+  auto one_torrent = AG::Torrent::Create(
+    "Sintel - Open Movie",
+    "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
+  );
+  auto another_torrent = AG::Torrent::Create(
+    "Leaves of Grass by Walt Whitman",
+    "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337"
+  );
+
+  auto torrents = { one_torrent, another_torrent };
+  session.push(torrents);
 
   return session.handle([&]() {
-    std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-    std::cout << "--> State: " << torrent->status.state << std::endl;
-    std::cout << "--> Peers: " << torrent->status.peers << std::endl;
-    std::cout << "--> Progress: " << unsigned(torrent->status.progress) << "%" << std::endl;
-    std::cout << "--> Downloaded: " << unsigned(torrent->status.total_downloaded) << " kb" << std::endl;
-    std::cout << "--> Download rate: " << unsigned(torrent->status.download_rate) << " kb/s" << std::endl;
+    std::system("clear");
+    for (auto torrent : torrents) {
+      std::cout << "Torrent: " << torrent->get_alias() << std::endl;
+      std::cout << "--> State: " << torrent->status.state << std::endl;
+      std::cout << "--> Peers: " << torrent->status.peers << std::endl;
+      std::cout << "--> Progress: " << unsigned(torrent->status.progress) << "%" << std::endl;
+      std::cout << "--> Downloaded: " << unsigned(torrent->status.total_downloaded) << " kb" << std::endl;
+      std::cout << "--> Download rate: " << unsigned(torrent->status.download_rate) << " kb/s" << std::endl;
+      std::cout << "---------------------------------" << std::endl;
+    }
   });
 }
