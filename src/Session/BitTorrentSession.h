@@ -14,8 +14,8 @@ public:
   BitTorrentSession();
   ~BitTorrentSession();
 
-  void push(const std::shared_ptr<BitTorrentDownload>&) final override;
-  void push(const std::vector<std::shared_ptr<BitTorrentDownload>>&) final override;
+  void push_download(const std::shared_ptr<BitTorrentDownload>&) final override;
+  void push_download(const std::vector<std::shared_ptr<BitTorrentDownload>>&) final override;
   int handle(const std::function<void(void)>& callback) final override;
 
 private:

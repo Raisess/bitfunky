@@ -18,15 +18,15 @@ AG::BitTorrentSession::BitTorrentSession() : Session() {
 
 AG::BitTorrentSession::~BitTorrentSession() {}
 
-void AG::BitTorrentSession::push(const std::shared_ptr<BitTorrentDownload>& torrent) {
+void AG::BitTorrentSession::push_download(const std::shared_ptr<BitTorrentDownload>& torrent) {
   torrent->status.state = BitTorrentDownloadStatus::State::ACTIVE;
   this->lt_session->add_torrent(torrent->get_lt_params());
   this->queue.push_back(torrent);
 }
 
-void AG::BitTorrentSession::push(const std::vector<std::shared_ptr<BitTorrentDownload>>& torrents) {
+void AG::BitTorrentSession::push_download(const std::vector<std::shared_ptr<BitTorrentDownload>>& torrents) {
   for (auto torrent : torrents) {
-    this->push(torrent);
+    this->push_download(torrent);
   }
 }
 

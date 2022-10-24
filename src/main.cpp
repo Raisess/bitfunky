@@ -14,12 +14,12 @@ int main(int argc, char* argv[]) {
     "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337"
   );
 
-  auto torrents = { one_torrent, another_torrent };
-  session.push(torrents);
+  auto torrent_list = { one_torrent, another_torrent };
+  session.push_download(torrent_list);
 
   return session.handle([&]() {
     std::system("clear");
-    for (auto torrent : torrents) {
+    for (auto torrent : torrent_list) {
       std::cout << "Torrent: " << torrent->get_alias() << std::endl;
       std::cout << "--> State: " << torrent->status.state << std::endl;
       std::cout << "--> Peers: " << torrent->status.peers << std::endl;
