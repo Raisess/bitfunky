@@ -3,11 +3,11 @@
 #include <cstdint>
 #include <iostream>
 #include <libtorrent/add_torrent_params.hpp>
-#include "File.h"
+#include "Download.h"
 
 namespace AG {
 
-class BitTorrentFileStatus {
+class BitTorrentDownloadStatus {
 public:
   enum State {
     CREATED = 0,
@@ -25,12 +25,12 @@ public:
   uint32_t total_downloaded = 0;
 };
 
-class BitTorrentFile : public File<BitTorrentFile> {
+class BitTorrentDownload : public Download<BitTorrentDownload> {
 public:
-  BitTorrentFileStatus status;
+  BitTorrentDownloadStatus status;
 
-  BitTorrentFile(const std::string& alias, const std::string& uri, const std::string& output);
-  ~BitTorrentFile();
+  BitTorrentDownload(const std::string& alias, const std::string& uri, const std::string& output);
+  ~BitTorrentDownload();
 
   lt::add_torrent_params get_lt_params() const;
 

@@ -6,7 +6,7 @@
 namespace AG {
 
 template <typename T>
-class File {
+class Download {
 public:
   static std::shared_ptr<T> Create(
     const std::string& alias,
@@ -23,9 +23,9 @@ public:
     return std::make_shared<T>(alias, uri, output);
   }
 
-  File(const std::string& alias, const std::string& uri, const std::string& output)
+  Download(const std::string& alias, const std::string& uri, const std::string& output)
     : alias(alias), uri(uri), output(output) {}
-  ~File() {}
+  ~Download() {}
 
   const std::string get_alias() const {
     return this->alias;

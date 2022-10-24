@@ -18,13 +18,13 @@ AG::BitTorrentSession::BitTorrentSession() : Session() {
 
 AG::BitTorrentSession::~BitTorrentSession() {}
 
-void AG::BitTorrentSession::push(const std::shared_ptr<BitTorrentFile>& torrent) {
-  torrent->status.state = BitTorrentFileStatus::State::ACTIVE;
+void AG::BitTorrentSession::push(const std::shared_ptr<BitTorrentDownload>& torrent) {
+  torrent->status.state = BitTorrentDownloadStatus::State::ACTIVE;
   this->lt_session->add_torrent(torrent->get_lt_params());
   this->queue.push_back(torrent);
 }
 
-void AG::BitTorrentSession::push(const std::vector<std::shared_ptr<BitTorrentFile>>& torrents) {
+void AG::BitTorrentSession::push(const std::vector<std::shared_ptr<BitTorrentDownload>>& torrents) {
   for (auto torrent : torrents) {
     this->push(torrent);
   }
@@ -49,11 +49,11 @@ int AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
             auto torrent = this->queue[i];
 
             switch (torrent->status.state) {
-              case BitTorrentFileStatus::State::ACTIVE:
+              case BitTorrentDownloadStatus::State::ACTIVE:
                 {
                   auto status = state->status[i];
                   if (status.is_finished) {
-                    torrent->status.state = BitTorrentFileStatus::State::FINISHED;
+                    torrent->status.state = BitTorrentDownloadStatus::State::FINISHED;
                   }
 
                   torrent->status.progress = status.progress_ppm / 10000;
@@ -62,21 +62,21 @@ int AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
                   torrent->status.peers = status.num_peers;
                 }
                 break;
-              case BitTorrentFileStatus::State::FINISHED:
+              case BitTorrentDownloadStatus::State::FINISHED:
                 {
                   auto status = state->status[i];
                   if (status.is_seeding) {
-                    torrent->status.state = BitTorrentFileStatus::State::SEEDING;
+                    torrent->status.state = BitTorrentDownloadStatus::State::SEEDING;
                   }
                 }
                 break;
               // TODO: Sedding and paused state status update
-              case BitTorrentFileStatus::State::SEEDING:
-              case BitTorrentFileStatus::State::PAUSED:
+              case BitTorrentDownloadStatus::State::SEEDING:
+              case BitTorrentDownloadStatus::State::PAUSED:
                 break;
               // Do nothing states
-              case BitTorrentFileStatus::State::CREATED:
-              case BitTorrentFileStatus::State::FAILED:
+              case BitTorrentDownloadStatus::State::CREATED:
+              case BitTorrentDownloadStatus::State::FAILED:
                 break;
             }
           }
