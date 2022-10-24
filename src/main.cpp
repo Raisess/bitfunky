@@ -1,15 +1,15 @@
 #include <iostream>
-#include "Session.h"
-#include "Torrent.h"
+#include "File/BitTorrentFile.h"
+#include "Session/BitTorrentSession.h"
 
 int main(int argc, char* argv[]) {
-  AG::Session session;
+  AG::BitTorrentSession session;
 
-  auto one_torrent = AG::Torrent::Create(
+  auto one_torrent = AG::BitTorrentFile::Create(
     "Sintel - Open Movie",
     "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
   );
-  auto another_torrent = AG::Torrent::Create(
+  auto another_torrent = AG::BitTorrentFile::Create(
     "Leaves of Grass by Walt Whitman",
     "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337"
   );

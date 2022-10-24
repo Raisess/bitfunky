@@ -2,8 +2,8 @@ CXX=clang++ -std=c++14
 EXTERNAL_LIB_LINK=/usr/local/lib/libtorrent-rasterbar.so.2.0.8
 
 SRC_DIR=./src
-LIB_SRC=$(SRC_DIR)/Session.cpp \
-				$(SRC_DIR)/Torrent.cpp
+LIB_SRC=$(SRC_DIR)/File/BitTorrentFile.cpp \
+				$(SRC_DIR)/Session/BitTorrentSession.cpp
 SRC=$(SRC_DIR)/main.cpp
 
 OUT_DIR=./build
