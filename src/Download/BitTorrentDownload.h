@@ -8,7 +8,7 @@ namespace AG {
 
 class BitTorrentDownload : public Download {
 public:
-  BitTorrentDownload(const std::string& alias, const std::string& uri, const std::string& output);
+  BitTorrentDownload(const std::string& alias, const std::string& magnet_uri, const std::string& output);
   ~BitTorrentDownload();
 
   lt::add_torrent_params get_lt_params() const;

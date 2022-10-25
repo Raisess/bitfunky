@@ -17,10 +17,10 @@ public:
   };
 
   Status status;
-  uint8_t progress = 0;
-  uint16_t peers = 0;
-  uint32_t download_rate = 0;
-  uint32_t total_downloaded = 0;
+  uint8_t progress = 0; // in percent
+  uint64_t download_rate = 0; // in kB
+  uint64_t total_downloaded = 0; // in kB
+  uint16_t peers = 0; // BitTorrent only
 };
 
 class Download {
