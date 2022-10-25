@@ -2,7 +2,7 @@
 #include "BitTorrentDownload.h"
 
 AG::BitTorrentDownload::BitTorrentDownload(const std::string& alias, const std::string& uri, const std::string& output)
-  : Download<BitTorrentDownload>(alias, uri, output) {
+  : Download(alias, uri, output) {
   this->state.status = DownloadState::Status::CREATED;
   this->lt_torrent_params = lt::parse_magnet_uri(uri);
   this->lt_torrent_params.save_path = output;

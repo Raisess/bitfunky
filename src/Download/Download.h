@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <iostream>
-#include <memory>
 
 namespace AG {
 
@@ -24,24 +23,8 @@ public:
   uint32_t total_downloaded = 0;
 };
 
-template <typename T>
 class Download {
 public:
-  static std::shared_ptr<T> Create(
-    const std::string& alias,
-    const std::string& uri
-  ) {
-    return std::make_shared<T>(alias, uri, ".");
-  }
-
-  static std::shared_ptr<T> Create(
-    const std::string& alias,
-    const std::string& uri,
-    const std::string& output
-  ) {
-    return std::make_shared<T>(alias, uri, output);
-  }
-
   DownloadState state;
 
   Download(const std::string& alias, const std::string& uri, const std::string& output)
