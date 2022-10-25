@@ -1,5 +1,7 @@
+#include <chrono>
 #include <iostream>
 #include <memory>
+#include <thread>
 #include "Download/BitTorrentDownload.h"
 #include "Session/BitTorrentSession.h"
 
@@ -24,17 +26,20 @@ int main(int argc, char* argv[]) {
 
   while (true) {
     std::system("clear");
-    bt_session.handle([&]() {
-      for (auto torrent : torrent_list) {
-        std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-        std::cout << "--> Status: " << torrent->state.status << std::endl;
-        std::cout << "--> Peers: " << torrent->state.peers << std::endl;
-        std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
-        std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
-        std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
-        std::cout << "---------------------------------" << std::endl;
-      }
-    });
+    bt_session.handle();
+
+    std::cout << "------> BitTorrent Client <------" << std::endl;
+    for (auto torrent : torrent_list) {
+      std::cout << "Torrent: " << torrent->get_alias() << std::endl;
+      std::cout << "--> Status: " << torrent->state.status << std::endl;
+      std::cout << "--> Peers: " << torrent->state.peers << std::endl;
+      std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
+      std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
+      std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
+      std::cout << "---------------------------------" << std::endl;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
   }
 
   return 0;

@@ -1,6 +1,4 @@
-#include <chrono>
 #include <iostream>
-#include <thread>
 #include <libtorrent/alert_types.hpp>
 #include <libtorrent/session_params.hpp>
 #include "BitTorrentSession.h"
@@ -30,7 +28,7 @@ void AG::BitTorrentSession::push_download(const std::vector<std::shared_ptr<BitT
   }
 }
 
-void AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
+void AG::BitTorrentSession::handle() {
   try {
     std::vector<lt::alert*> lt_alerts;
     this->lt_session->pop_alerts(&lt_alerts);
@@ -82,9 +80,7 @@ void AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
       }
     }
 
-    callback();
     this->lt_session->post_torrent_updates();
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     return;
   } catch (std::exception& err) {
     std::cerr << "Error: " << err.what() << std::endl;

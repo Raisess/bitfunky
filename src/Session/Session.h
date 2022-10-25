@@ -1,6 +1,5 @@
 #pragma once
 
-#include <functional>
 #include <memory>
 #include <vector>
 
@@ -14,7 +13,7 @@ public:
 
   virtual void push_download(const std::shared_ptr<Download>&) {}
   virtual void push_download(const std::vector<std::shared_ptr<Download>>&) {}
-  virtual void handle(const std::function<void(void)>& callback) {}
+  virtual void handle() {}
 
 protected:
   std::vector<std::shared_ptr<Download>> queue;
