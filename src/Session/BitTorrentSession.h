@@ -16,7 +16,7 @@ public:
 
   void push_download(const std::shared_ptr<BitTorrentDownload>&) final override;
   void push_download(const std::vector<std::shared_ptr<BitTorrentDownload>>&) final override;
-  int handle(const std::function<void(void)>& callback) final override;
+  void handle(const std::function<void(void)>& callback) final override;
 
 private:
   std::unique_ptr<lt::session> lt_session = nullptr;

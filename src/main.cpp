@@ -4,7 +4,7 @@
 #include "Session/BitTorrentSession.h"
 
 int main(int argc, char* argv[]) {
-  AG::BitTorrentSession session;
+  AG::BitTorrentSession bt_session;
 
   auto one_torrent = std::make_shared<AG::BitTorrentDownload>(
     "Sintel - Open Movie",
@@ -18,18 +18,22 @@ int main(int argc, char* argv[]) {
   );
 
   auto torrent_list = { one_torrent, another_torrent };
-  session.push_download(torrent_list);
+  bt_session.push_download(torrent_list);
 
-  return session.handle([&]() {
-    std::system("clear");
-    for (auto torrent : torrent_list) {
-      std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-      std::cout << "--> Status: " << torrent->state.status << std::endl;
-      std::cout << "--> Peers: " << torrent->state.peers << std::endl;
-      std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
-      std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
-      std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
-      std::cout << "---------------------------------" << std::endl;
-    }
-  });
+  while (true) {
+    bt_session.handle([&]() {
+      std::system("clear");
+      for (auto torrent : torrent_list) {
+        std::cout << "Torrent: " << torrent->get_alias() << std::endl;
+        std::cout << "--> Status: " << torrent->state.status << std::endl;
+        std::cout << "--> Peers: " << torrent->state.peers << std::endl;
+        std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
+        std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
+        std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
+        std::cout << "---------------------------------" << std::endl;
+      }
+    });
+  }
+
+  return 0;
 }
