@@ -5,7 +5,7 @@
 #include <libtorrent/session_params.hpp>
 #include "BitTorrentSession.h"
 
-AG::BitTorrentSession::BitTorrentSession() : Session() {
+AG::BitTorrentSession::BitTorrentSession() : Session<BitTorrentDownload>() {
   lt::settings_pack lt_settings;
   lt_settings.set_int(
     lt::settings_pack::alert_mask,
@@ -19,7 +19,7 @@ AG::BitTorrentSession::BitTorrentSession() : Session() {
 AG::BitTorrentSession::~BitTorrentSession() {}
 
 void AG::BitTorrentSession::push_download(const std::shared_ptr<BitTorrentDownload>& torrent) {
-  torrent->status.state = BitTorrentDownloadStatus::State::ACTIVE;
+  torrent->state.status = DownloadState::Status::ACTIVE;
   this->lt_session->add_torrent(torrent->get_lt_params());
   this->queue.push_back(torrent);
 }
@@ -48,43 +48,43 @@ int AG::BitTorrentSession::handle(const std::function<void(void)>& callback) {
           for (size_t i = 0; i < state->status.size(); i++) {
             auto torrent = this->queue[i];
 
-            switch (torrent->status.state) {
-              case BitTorrentDownloadStatus::State::ACTIVE:
+            switch (torrent->state.status) {
+              case DownloadState::Status::ACTIVE:
                 {
                   auto status = state->status[i];
                   if (status.is_finished) {
-                    torrent->status.state = BitTorrentDownloadStatus::State::FINISHED;
+                    torrent->state.status = DownloadState::Status::FINISHED;
                   }
 
-                  torrent->status.progress = status.progress_ppm / 10000;
-                  torrent->status.total_downloaded = status.total_done / 1000;
-                  torrent->status.download_rate = status.download_payload_rate / 1000;
-                  torrent->status.peers = status.num_peers;
+                  torrent->state.progress = status.progress_ppm / 10000;
+                  torrent->state.total_downloaded = status.total_done / 1000;
+                  torrent->state.download_rate = status.download_payload_rate / 1000;
+                  torrent->state.peers = status.num_peers;
                 }
                 break;
-              case BitTorrentDownloadStatus::State::FINISHED:
+              case DownloadState::Status::FINISHED:
                 {
                   auto status = state->status[i];
                   if (status.is_seeding) {
-                    torrent->status.state = BitTorrentDownloadStatus::State::SEEDING;
+                    torrent->state.status = DownloadState::Status::SEEDING;
                   }
                 }
                 break;
               // TODO: Sedding and paused state status update
-              case BitTorrentDownloadStatus::State::SEEDING:
-              case BitTorrentDownloadStatus::State::PAUSED:
+              case DownloadState::Status::SEEDING:
+              case DownloadState::Status::PAUSED:
                 break;
               // Do nothing states
-              case BitTorrentDownloadStatus::State::CREATED:
-              case BitTorrentDownloadStatus::State::FAILED:
+              case DownloadState::Status::CREATED:
+              case DownloadState::Status::FAILED:
                 break;
             }
           }
         }
       }
 
-      this->lt_session->post_torrent_updates();
       callback();
+      this->lt_session->post_torrent_updates();
       std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 

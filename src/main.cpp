@@ -21,11 +21,11 @@ int main(int argc, char* argv[]) {
     std::system("clear");
     for (auto torrent : torrent_list) {
       std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-      std::cout << "--> State: " << torrent->status.state << std::endl;
-      std::cout << "--> Peers: " << torrent->status.peers << std::endl;
-      std::cout << "--> Progress: " << unsigned(torrent->status.progress) << "%" << std::endl;
-      std::cout << "--> Downloaded: " << unsigned(torrent->status.total_downloaded) << " kb" << std::endl;
-      std::cout << "--> Download rate: " << unsigned(torrent->status.download_rate) << " kb/s" << std::endl;
+      std::cout << "--> Status: " << torrent->state.status << std::endl;
+      std::cout << "--> Peers: " << torrent->state.peers << std::endl;
+      std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
+      std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
+      std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
       std::cout << "---------------------------------" << std::endl;
     }
   });
