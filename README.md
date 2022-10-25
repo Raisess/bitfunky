@@ -1,6 +1,6 @@
 # BitFunky
 
-A small cross-protocol file sharing client api.
+A small multi-protocol file sharing client api.
 
 ## Supporting
 
