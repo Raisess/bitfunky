@@ -12,6 +12,11 @@ AG::BitTorrentSession::BitTorrentSession() : Session<BitTorrentDownload>() {
     | lt::alert_category::storage
   );
   this->lt_session = std::make_unique<lt::session>(lt_settings);
+
+  if (!this->lt_session) {
+    std::cerr << "Error creating BitTorrentSession" << std::endl;
+    exit(1);
+  }
 }
 
 AG::BitTorrentSession::~BitTorrentSession() {}
