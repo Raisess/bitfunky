@@ -1,0 +1,24 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+#include <libtorrent/session.hpp>
+#include "TorrentDownload.h"
+
+namespace AG {
+
+class TorrentSession {
+public:
+  TorrentSession();
+  ~TorrentSession();
+
+  void push_download(const std::shared_ptr<TorrentDownload>&);
+  void push_download(const std::vector<std::shared_ptr<TorrentDownload>>&);
+  void handle();
+
+private:
+  std::vector<std::shared_ptr<TorrentDownload>> queue;
+  std::unique_ptr<lt::session> lt_session = nullptr;
+};
+
+}

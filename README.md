@@ -1,9 +1,5 @@
 # BitFunky
 
-A small multi-protocol file sharing client api.
+A small BitTorrent client api.
 
-## Supporting
-
-- BitTorrent protocol, using [libtorrent](http://www.libtorrent.org/index.html).
-- TODO: HTTP protocol
-- TODO: FTP protocol
+Made using [libtorrent](http://www.libtorrent.org/index.html).
