@@ -3,7 +3,7 @@
 #include <libtorrent/session_params.hpp>
 #include "TorrentSession.h"
 
-AG::TorrentSession::TorrentSession() {
+BF::TorrentSession::TorrentSession() {
   lt::settings_pack lt_settings;
   lt_settings.set_int(
     lt::settings_pack::alert_mask,
@@ -19,21 +19,21 @@ AG::TorrentSession::TorrentSession() {
   }
 }
 
-AG::TorrentSession::~TorrentSession() {}
+BF::TorrentSession::~TorrentSession() {}
 
-void AG::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& torrent) {
+void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& torrent) {
   torrent->state.status = TorrentDownloadState::Status::ACTIVE;
   this->lt_session->add_torrent(torrent->get_add_torrent_params());
   this->queue.push_back(torrent);
 }
 
-void AG::TorrentSession::push_download(const std::vector<std::shared_ptr<TorrentDownload>>& torrents) {
+void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<TorrentDownload>>& torrents) {
   for (auto torrent : torrents) {
     this->push_download(torrent);
   }
 }
 
-void AG::TorrentSession::handle() {
+void BF::TorrentSession::handle() {
   try {
     std::vector<lt::alert*> lt_alerts;
     this->lt_session->pop_alerts(&lt_alerts);

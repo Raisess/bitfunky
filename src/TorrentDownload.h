@@ -4,7 +4,7 @@
 #include <memory>
 #include <libtorrent/add_torrent_params.hpp>
 
-namespace AG {
+namespace BF {
 
 class TorrentDownloadState {
 public:

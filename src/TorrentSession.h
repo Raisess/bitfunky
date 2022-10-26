@@ -5,7 +5,7 @@
 #include <libtorrent/session.hpp>
 #include "TorrentDownload.h"
 
-namespace AG {
+namespace BF {
 
 class TorrentSession {
 public:
