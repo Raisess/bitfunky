@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <libtorrent/add_torrent_params.hpp>
 
 namespace AG {
@@ -25,6 +26,9 @@ public:
 
 class TorrentDownload {
 public:
+  static std::shared_ptr<TorrentDownload> Create(const std::string& alias, const std::string& magnet_uri);
+  static std::shared_ptr<TorrentDownload> Create(const std::string& alias, const std::string& magnet_uri, const std::string& output);
+
   TorrentDownloadState state;
 
   TorrentDownload(const std::string& alias, const std::string& magnet_uri, const std::string& output);

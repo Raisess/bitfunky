@@ -1,10 +1,22 @@
 #include <libtorrent/magnet_uri.hpp>
 #include "TorrentDownload.h"
 
+std::shared_ptr<AG::TorrentDownload> AG::TorrentDownload::Create(const std::string& alias, const std::string& magnet_uri) {
+  return std::make_shared<TorrentDownload>(alias, magnet_uri, ".");
+}
+
+std::shared_ptr<AG::TorrentDownload> AG::TorrentDownload::Create(
+  const std::string& alias,
+  const std::string& magnet_uri,
+  const std::string& output
+) {
+  return std::make_shared<TorrentDownload>(alias, magnet_uri, output);
+}
+
 AG::TorrentDownload::TorrentDownload(
   const std::string& alias,
   const std::string& magnet_uri,
-  const std::string& output = "."
+  const std::string& output
 ) : alias(alias), magnet_uri(magnet_uri), output(output) {
   this->state.status = TorrentDownloadState::Status::CREATED;
   this->lt_add_torrent_params = lt::parse_magnet_uri(magnet_uri);
