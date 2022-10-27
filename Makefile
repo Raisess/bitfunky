@@ -12,11 +12,11 @@ OUT=$(OUT_DIR)/main.o
 
 build:
 	make build-lib
-	$(CXX) $(EXTERNAL_LIB_LINK) $(LIB_OUT) $(SRC) -o $(OUT)
+	$(CXX) $(LIB_OUT) $(SRC) -o $(OUT)
 
 build-lib:
 	mkdir -p $(OUT_DIR)
-	$(CXX) -fPIC -shared $(LIB_SRC) -o $(LIB_OUT)
+	$(CXX) -fPIC -shared $(EXTERNAL_LIB_LINK) $(LIB_SRC) -o $(LIB_OUT)
 
 install:
 	sudo mkdir -p /usr/local/include/bitfunky
