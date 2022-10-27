@@ -1,6 +1,7 @@
 #include <iostream>
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/torrent_flags.hpp>
+#include <libtorrent/torrent_info.hpp>
 #include "TorrentSession.h"
 
 BF::TorrentSession::TorrentSession() {
@@ -15,9 +16,17 @@ BF::TorrentSession::TorrentSession() {
 BF::TorrentSession::~TorrentSession() {}
 
 void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& torrent) {
-  auto add_torrent_params = lt::parse_magnet_uri(torrent->get_magnet_uri());
-  add_torrent_params.save_path = torrent->get_output();
-  torrent->set_torrent_handle(this->lt_session->add_torrent(add_torrent_params));
+  if (torrent->is_magnet()) {
+    auto add_torrent_params = lt::parse_magnet_uri(torrent->get_input());
+    add_torrent_params.save_path = torrent->get_output();
+    auto handler = this->lt_session->add_torrent(std::move(add_torrent_params));
+    torrent->set_torrent_handle(std::move(handler));
+  } else {
+    auto torrent_info = lt::torrent_info(torrent->get_input());
+    auto handler = this->lt_session->add_torrent(std::move(torrent_info), torrent->get_output());
+    torrent->set_torrent_handle(std::move(handler));
+  }
+
   torrent->state.status = TorrentDownloadState::Status::ACTIVE;
   this->queue.push_back(torrent);
 }

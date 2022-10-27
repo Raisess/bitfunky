@@ -26,25 +26,27 @@ public:
 
 class TorrentDownload {
 public:
-  static std::shared_ptr<TorrentDownload> Create(const std::string& alias, const std::string& magnet_uri);
-  static std::shared_ptr<TorrentDownload> Create(const std::string& alias, const std::string& magnet_uri, const std::string& output);
+  static std::shared_ptr<TorrentDownload> CreateFromMagnet(const std::string& alias, const std::string& magnet_uri, const std::string& output);
+  static std::shared_ptr<TorrentDownload> CreateFromTorrent(const std::string& alias, const std::string& file_path, const std::string& output);
 
   TorrentDownloadState state;
 
-  TorrentDownload(const std::string& alias, const std::string& magnet_uri, const std::string& output);
+  TorrentDownload(const std::string& alias, const std::string& input, const std::string& output, bool magnet);
   ~TorrentDownload();
 
   lt::torrent_handle get_torrent_handle() const;
   void set_torrent_handle(const lt::torrent_handle&);
 
+  const bool is_magnet() const;
   const std::string get_alias() const;
-  const std::string get_magnet_uri() const;
+  const std::string get_input() const;
   const std::string get_output() const;
 
 private:
   std::string alias;
-  std::string magnet_uri;
+  std::string input;
   std::string output;
+  bool magnet;
 
   lt::torrent_handle lt_torrent_handle;
 };
