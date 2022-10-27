@@ -1,5 +1,6 @@
 #include <iostream>
 #include <libtorrent/magnet_uri.hpp>
+#include <libtorrent/torrent_flags.hpp>
 #include "TorrentSession.h"
 
 BF::TorrentSession::TorrentSession() {
@@ -29,18 +30,23 @@ void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent
 
 void BF::TorrentSession::handle() {
   for (auto torrent : this->queue) {
-    auto status = torrent->get_torrent_handle().status();
+    const auto handler = torrent->get_torrent_handle();
+    const auto status = handler.status();
+
+    torrent->state.progress = status.progress_ppm / 10000;
+    torrent->state.total_downloaded = status.total_done / 1000;
+    torrent->state.download_rate = status.download_payload_rate / 1000;
+    torrent->state.peers = status.num_peers;
 
     switch (torrent->state.status) {
       case TorrentDownloadState::Status::ACTIVE:
         if (status.is_finished) {
           torrent->state.status = TorrentDownloadState::Status::FINISHED;
         }
-
-        torrent->state.progress = status.progress_ppm / 10000;
-        torrent->state.total_downloaded = status.total_done / 1000;
-        torrent->state.download_rate = status.download_payload_rate / 1000;
-        torrent->state.peers = status.num_peers;
+        handler.unset_flags(lt::torrent_flags::paused);
+        break;
+      case TorrentDownloadState::Status::PAUSED:
+        handler.set_flags(lt::torrent_flags::paused);
         break;
       case TorrentDownloadState::Status::FINISHED:
         if (status.is_seeding) {
@@ -52,7 +58,6 @@ void BF::TorrentSession::handle() {
         break;
       // Do nothing states
       case TorrentDownloadState::Status::CREATED:
-      case TorrentDownloadState::Status::PAUSED:
       case TorrentDownloadState::Status::FAILED:
         break;
     }
