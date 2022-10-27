@@ -40,3 +40,11 @@ const std::string BF::TorrentDownload::get_output() const {
 lt::add_torrent_params BF::TorrentDownload::get_add_torrent_params() const {
   return this->lt_add_torrent_params;
 }
+
+lt::torrent_handle BF::TorrentDownload::get_torrent_handle() const {
+  return this->lt_torrent_handle;
+}
+
+void BF::TorrentDownload::set_torrent_handle(const lt::torrent_handle& torrent_handle) {
+  this->lt_torrent_handle = torrent_handle;
+}

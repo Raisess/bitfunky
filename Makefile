@@ -18,6 +18,11 @@ build-lib:
 	mkdir -p $(OUT_DIR)
 	$(CXX) -fPIC -shared $(LIB_SRC) -o $(LIB_OUT)
 
+install:
+	sudo mkdir -p /usr/local/include/bitfunky
+	sudo cp -r ./src/*.h /usr/local/include/bitfunky
+	sudo cp $(LIB_OUT) /usr/local/lib
+
 run:
 	$(OUT)
 

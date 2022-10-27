@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <libtorrent/add_torrent_params.hpp>
+#include <libtorrent/torrent_handle.hpp>
 
 namespace BF {
 
@@ -39,6 +40,8 @@ public:
   const std::string get_output() const;
 
   lt::add_torrent_params get_add_torrent_params() const;
+  lt::torrent_handle get_torrent_handle() const;
+  void set_torrent_handle(const lt::torrent_handle&);
 
 private:
   std::string alias;
@@ -46,6 +49,7 @@ private:
   std::string output;
 
   lt::add_torrent_params lt_add_torrent_params;
+  lt::torrent_handle lt_torrent_handle;
 };
 
 }
