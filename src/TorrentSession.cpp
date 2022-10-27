@@ -1,17 +1,9 @@
 #include <iostream>
-#include <libtorrent/alert_types.hpp>
-#include <libtorrent/session_params.hpp>
+#include <libtorrent/magnet_uri.hpp>
 #include "TorrentSession.h"
 
 BF::TorrentSession::TorrentSession() {
-  lt::settings_pack lt_settings;
-  lt_settings.set_int(
-    lt::settings_pack::alert_mask,
-    lt::alert_category::error
-    | lt::alert_category::status
-    | lt::alert_category::storage
-  );
-  this->lt_session = std::make_unique<lt::session>(lt_settings);
+  this->lt_session = std::make_unique<lt::session>();
 
   if (!this->lt_session) {
     std::cerr << "Error creating TorrentSession" << std::endl;
@@ -22,10 +14,10 @@ BF::TorrentSession::TorrentSession() {
 BF::TorrentSession::~TorrentSession() {}
 
 void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& torrent) {
+  auto add_torrent_params = lt::parse_magnet_uri(torrent->get_magnet_uri());
+  add_torrent_params.save_path = torrent->get_output();
+  torrent->set_torrent_handle(this->lt_session->add_torrent(add_torrent_params));
   torrent->state.status = TorrentDownloadState::Status::ACTIVE;
-  torrent->set_torrent_handle(
-    this->lt_session->add_torrent(torrent->get_add_torrent_params())
-  );
   this->queue.push_back(torrent);
 }
 
@@ -55,12 +47,12 @@ void BF::TorrentSession::handle() {
           torrent->state.status = TorrentDownloadState::Status::SEEDING;
         }
         break;
-      // TODO: Sedding and paused state status update
+      // TODO: Sedding state status update
       case TorrentDownloadState::Status::SEEDING:
-      case TorrentDownloadState::Status::PAUSED:
         break;
       // Do nothing states
       case TorrentDownloadState::Status::CREATED:
+      case TorrentDownloadState::Status::PAUSED:
       case TorrentDownloadState::Status::FAILED:
         break;
     }

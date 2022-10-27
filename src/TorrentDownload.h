@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <memory>
-#include <libtorrent/add_torrent_params.hpp>
 #include <libtorrent/torrent_handle.hpp>
 
 namespace BF {
@@ -15,7 +14,7 @@ public:
     ACTIVE,
     PAUSED,
     FINISHED,
-    SEEDING, // BitTorrent only
+    SEEDING,
   };
 
   Status status;
@@ -35,20 +34,18 @@ public:
   TorrentDownload(const std::string& alias, const std::string& magnet_uri, const std::string& output);
   ~TorrentDownload();
 
+  lt::torrent_handle get_torrent_handle() const;
+  void set_torrent_handle(const lt::torrent_handle&);
+
   const std::string get_alias() const;
   const std::string get_magnet_uri() const;
   const std::string get_output() const;
-
-  lt::add_torrent_params get_add_torrent_params() const;
-  lt::torrent_handle get_torrent_handle() const;
-  void set_torrent_handle(const lt::torrent_handle&);
 
 private:
   std::string alias;
   std::string magnet_uri;
   std::string output;
 
-  lt::add_torrent_params lt_add_torrent_params;
   lt::torrent_handle lt_torrent_handle;
 };
 
