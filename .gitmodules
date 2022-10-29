@@ -4,3 +4,9 @@
 [submodule "client/cli/cli-creator"]
 	path = client/cli/cli-creator
 	url = https://github.com/Raisess/cli-creator.git
+[submodule "lib/libtorrent"]
+	path = lib/libtorrent
+	url = https://github.com/arvidn/libtorrent.git
+[submodule "lib/cli-creator"]
+	path = lib/cli-creator
+	url = https://github.com/Raisess/cli-creator.git
