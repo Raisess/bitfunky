@@ -2,6 +2,7 @@
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/torrent_info.hpp>
+#include "util/Time.h"
 #include "TorrentSession.h"
 
 BF::TorrentSession::TorrentSession() {
@@ -34,6 +35,20 @@ void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& t
 void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<TorrentDownload>>& torrents) {
   for (auto torrent : torrents) {
     this->push_download(torrent);
+  }
+}
+
+bool keep_running = true;
+void handle_interrupt_signal(int) {
+  keep_running = false;
+}
+
+void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
+  signal(SIGINT, handle_interrupt_signal);
+  while (keep_running) {
+    this->handle();
+    callback();
+    BF::Util::Time::Sleep(200);
   }
 }
 

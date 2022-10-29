@@ -1,6 +1,5 @@
 #include <iostream>
 #include "util/Logger.h"
-#include "util/Time.h"
 #include "TorrentDownload.h"
 #include "TorrentSession.h"
 
@@ -25,20 +24,17 @@ int main(int argc, char* argv[]) {
     )
   };
 
-  BF::TorrentSession bt_session;
-  bt_session.push_download(torrent_list);
+  BF::TorrentSession session;
+  session.push_download(torrent_list);
 
-  while (true) {
+  session.loop([torrent_list]() {
     std::system("clear");
 
     for (auto torrent : torrent_list) {
       std::cout << "Torrent: " << torrent->get_alias() << std::endl;
       BF::Util::Logger::PrintTorrentState(torrent->state);
     }
-
-    bt_session.handle();
-    BF::Util::Time::Sleep(200);
-  }
+  });
 
   return 0;
 }

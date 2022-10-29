@@ -2,17 +2,26 @@
 #include <memory>
 #include <vector>
 #include <bitfunky/util/Logger.h>
-#include <bitfunky/util/Time.h>
 #include <bitfunky/TorrentDownload.h>
 #include <bitfunky/TorrentSession.h>
 #include <cli-creator/Cli.h>
 
+#define EXIT_KEY 'q'
 #define DEFAULT_OUTPUT "."
 #define ALIAS_MAX_PRINT_SIZE 30
 
 using namespace CliCreator;
 
-auto download_torrent = [](Arguments args) -> int {
+auto help = [](Arguments) {
+  std::cout << "-----> BitFunky CLI Commands" << std::endl;
+  std::cout << "\t--torrent | -t: Download torrents" << std::endl;
+  std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
+  std::cout << "\t--help | -h: Show help" << std::endl;
+  std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
+  return 0;
+};
+
+auto download_torrent = [](Arguments args) {
   try {
     if (args.size() == 0) {
       std::cerr << "Invalid argument, no file provided." << std::endl;
@@ -27,7 +36,7 @@ auto download_torrent = [](Arguments args) -> int {
     BF::TorrentSession session;
     session.push_download(torrents);
 
-    while (true) {
+    session.loop([torrents]() {
       std::system("clear");
 
       std::cout << "-----> BitFunky Client" << std::endl;
@@ -37,11 +46,9 @@ auto download_torrent = [](Arguments args) -> int {
         std::cout << " ";
         BF::Util::Logger::PrintTorrentState(torrent->state);
       }
-      std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
 
-      session.handle();
-      BF::Util::Time::Sleep(200);
-    }
+      std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
+    });
 
     return 0;
   } catch (std::exception& err) {
@@ -50,22 +57,13 @@ auto download_torrent = [](Arguments args) -> int {
   }
 };
 
-auto help = [](Arguments) -> int {
-  std::cout << "-----> BitFunky CLI Commands" << std::endl;
-  std::cout << "\t--torrent | -t: Download torrents" << std::endl;
-  std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
-  std::cout << "\t--help | -h: Show help" << std::endl;
-  std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
-  return 0;
-};
-
 int main(int argc, char* argv[]) {
   Cli cli;
 
-  cli.commands["--torrent"] = download_torrent;
-  cli.commands["-t"] = download_torrent;
   cli.commands["--help"] = help;
   cli.commands["-h"] = help;
+  cli.commands["--torrent"] = download_torrent;
+  cli.commands["-t"] = download_torrent;
 
   return cli.handle(argc, argv);
 }

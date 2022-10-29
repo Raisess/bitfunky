@@ -15,7 +15,7 @@ make install
 
 ```shell
 bitfunky --torrent=./path/file.torrent
-bitfunky --torrent=./path/file.torrent,./path/output
+bitfunky --torrent=./path/file1.torrent,./path/file2.torrent
 ```
 
 ### Uninstalling:

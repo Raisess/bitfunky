@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <vector>
 #include <libtorrent/session.hpp>
@@ -14,6 +15,7 @@ public:
 
   void push_download(const std::shared_ptr<TorrentDownload>&);
   void push_download(const std::vector<std::shared_ptr<TorrentDownload>>&);
+  void loop(const std::function<void(void)>&);
   void handle();
 
 private:
