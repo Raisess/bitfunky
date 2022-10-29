@@ -1,4 +1,5 @@
 #include <iostream>
+#include "util/Logger.h"
 #include "util/Time.h"
 #include "TorrentDownload.h"
 #include "TorrentSession.h"
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]) {
       OUTPUT_DIR
     ),
     BF::TorrentDownload::CreateFromTorrent(
-      "Star Wars 1977",
+      "Star Wars 1977 (Trailer)",
       "./input/star-wars-1977_archive.torrent",
       OUTPUT_DIR
     )
@@ -30,15 +31,9 @@ int main(int argc, char* argv[]) {
   while (true) {
     std::system("clear");
 
-    std::cout << "------> BitTorrent Client <------" << std::endl;
     for (auto torrent : torrent_list) {
       std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-      std::cout << "--> Status: " << torrent->state.status << std::endl;
-      std::cout << "--> Peers: " << torrent->state.peers << std::endl;
-      std::cout << "--> Progress: " << unsigned(torrent->state.progress) << "%" << std::endl;
-      std::cout << "--> Downloaded: " << unsigned(torrent->state.total_downloaded) << " kB" << std::endl;
-      std::cout << "--> Download rate: " << unsigned(torrent->state.download_rate) << " kB/s" << std::endl;
-      std::cout << "---------------------------------" << std::endl;
+      BF::Util::Logger::PrintTorrentState(torrent->state);
     }
 
     bt_session.handle();
