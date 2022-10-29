@@ -14,6 +14,11 @@ using namespace CliCreator;
 
 auto download_torrent = [](Arguments args) -> int {
   try {
+    if (args.size() == 0) {
+      std::cerr << "Invalid argument, no file provided." << std::endl;
+      return 1;
+    }
+
     std::vector<std::shared_ptr<BF::TorrentDownload>> torrents = {};
     for (auto arg : args) {
       torrents.push_back(BF::TorrentDownload::CreateFromTorrent(arg, arg, DEFAULT_OUTPUT));
