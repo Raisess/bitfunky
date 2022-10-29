@@ -19,8 +19,9 @@ build-lib:
 	$(CXX) -fPIC -shared $(EXTERNAL_LIB_LINK) $(LIB_SRC) -o $(LIB_OUT)
 
 install:
-	sudo mkdir -p /usr/local/include/bitfunky
+	sudo mkdir -p /usr/local/include/bitfunky/util
 	sudo cp -r ./src/*.h /usr/local/include/bitfunky
+	sudo cp -r ./src/util/*.h /usr/local/include/bitfunky/util
 	sudo cp $(LIB_OUT) /usr/local/lib
 
 run:

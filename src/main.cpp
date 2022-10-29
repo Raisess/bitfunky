@@ -1,6 +1,5 @@
-#include <chrono>
 #include <iostream>
-#include <thread>
+#include "util/Time.h"
 #include "TorrentDownload.h"
 #include "TorrentSession.h"
 
@@ -27,7 +26,6 @@ int main(int argc, char* argv[]) {
 
   BF::TorrentSession bt_session;
   bt_session.push_download(torrent_list);
-  // torrent_list[0]->state.status = BF::TorrentDownloadState::Status::PAUSED;
 
   while (true) {
     std::system("clear");
@@ -44,7 +42,7 @@ int main(int argc, char* argv[]) {
     }
 
     bt_session.handle();
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    BF::Util::Time::Sleep(200);
   }
 
   return 0;
