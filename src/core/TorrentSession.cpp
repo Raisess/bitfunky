@@ -2,7 +2,7 @@
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/torrent_info.hpp>
-#include "util/Time.h"
+#include "../util/Time.h"
 #include "TorrentSession.h"
 
 BF::TorrentSession::TorrentSession() {

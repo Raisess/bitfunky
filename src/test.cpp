@@ -1,7 +1,7 @@
 #include <iostream>
+#include "core/TorrentDownload.h"
+#include "core/TorrentSession.h"
 #include "util/Logger.h"
-#include "TorrentDownload.h"
-#include "TorrentSession.h"
 
 #define OUTPUT_DIR "./output"
 
@@ -15,11 +15,6 @@ int main(int argc, char* argv[]) {
     BF::TorrentDownload::CreateFromMagnet(
       "Leaves of Grass - by Walt Whitman",
       "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337",
-      OUTPUT_DIR
-    ),
-    BF::TorrentDownload::CreateFromTorrent(
-      "Star Wars 1977 (Trailer)",
-      "./input/star-wars-1977_archive.torrent",
       OUTPUT_DIR
     )
   };

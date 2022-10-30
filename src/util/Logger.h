@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
-#include "../TorrentDownload.h"
+#include "../core/TorrentDownload.h"
 
 namespace BF {
 namespace Util {

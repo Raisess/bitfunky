@@ -1,9 +1,9 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <bitfunky/core/TorrentDownload.h>
+#include <bitfunky/core/TorrentSession.h>
 #include <bitfunky/util/Logger.h>
-#include <bitfunky/TorrentDownload.h>
-#include <bitfunky/TorrentSession.h>
 #include <cli-creator/Cli.h>
 
 #define EXIT_KEY 'q'
