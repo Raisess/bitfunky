@@ -30,7 +30,7 @@ auto download_torrent = [](Arguments args) {
 
     std::vector<std::shared_ptr<BF::TorrentDownload>> torrents = {};
     for (auto arg : args) {
-      torrents.push_back(BF::TorrentDownload::CreateFromTorrent(arg, arg, DEFAULT_OUTPUT));
+      torrents.push_back(BF::TorrentDownload::Create(arg, arg, DEFAULT_OUTPUT));
     }
 
     BF::TorrentSession session;
