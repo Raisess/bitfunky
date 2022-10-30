@@ -5,6 +5,8 @@
 #include "../util/Time.h"
 #include "TorrentSession.h"
 
+bool BF::TorrentSession::KeepRunning = true;
+
 BF::TorrentSession::TorrentSession() {
   this->lt_session = std::make_unique<lt::session>();
 
@@ -12,6 +14,8 @@ BF::TorrentSession::TorrentSession() {
     std::cerr << "Error creating TorrentSession" << std::endl;
     exit(1);
   }
+
+  signal(SIGINT, TorrentSession::HandleInterruptSignal);
 }
 
 BF::TorrentSession::~TorrentSession() {}
@@ -38,14 +42,8 @@ void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent
   }
 }
 
-bool keep_running = true;
-void handle_interrupt_signal(int) {
-  keep_running = false;
-}
-
 void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
-  signal(SIGINT, handle_interrupt_signal);
-  while (keep_running) {
+  while (TorrentSession::KeepRunning) {
     this->handle();
     callback();
     BF::Util::Time::Sleep(200);
