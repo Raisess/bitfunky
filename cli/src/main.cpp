@@ -12,12 +12,20 @@
 
 using namespace CliCreator;
 
+void print_header() {
+  std::cout << "-----> BitFunky CLI" << std::endl << std::endl;
+}
+
+void print_fotter() {
+  std::cout << std::endl << "Thanks for using BitFunky @ Raisess" << std::endl;
+}
+
 auto help = [](Arguments) {
-  std::cout << "-----> BitFunky CLI Commands" << std::endl;
+  print_header();
   std::cout << "\t--torrent | -t: Download torrents" << std::endl;
   std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
   std::cout << "\t--help | -h: Show help" << std::endl;
-  std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
+  print_fotter();
   return 0;
 };
 
@@ -38,8 +46,8 @@ auto download_torrent = [](Arguments args) {
 
     session.loop([torrents]() {
       std::system("clear");
+      print_header();
 
-      std::cout << "-----> BitFunky Client" << std::endl;
       for (auto torrent : torrents) {
         const auto alias = torrent->get_alias();
         std::cout << (alias.size() <= ALIAS_MAX_PRINT_SIZE ? alias : alias.substr(0, ALIAS_MAX_PRINT_SIZE) + "...");
@@ -47,7 +55,7 @@ auto download_torrent = [](Arguments args) {
         BF::Util::Logger::PrintTorrentState(torrent->state);
       }
 
-      std::cout << std::endl << "Thanks for using BitFunky CLI @ Raisess" << std::endl;
+      print_fotter();
     });
 
     return 0;
