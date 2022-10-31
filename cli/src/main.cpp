@@ -52,7 +52,7 @@ auto download_torrent = [](Arguments args) {
         const auto alias = torrent->get_alias();
         std::cout << (alias.size() <= ALIAS_MAX_PRINT_SIZE ? alias : alias.substr(0, ALIAS_MAX_PRINT_SIZE) + "...");
         std::cout << " ";
-        BF::Util::Logger::PrintTorrentState(torrent->state);
+        BF::Logger::PrintTorrentState(torrent->state);
       }
 
       print_footer();

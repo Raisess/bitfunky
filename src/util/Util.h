@@ -4,7 +4,6 @@
 #include <functional>
 
 namespace BF {
-namespace Util {
 
 class Util {
 public:
@@ -13,5 +12,4 @@ public:
   static void Sleep(uint16_t ms);
 };
 
-}
 }

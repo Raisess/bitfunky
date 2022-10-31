@@ -4,7 +4,7 @@
 
 static std::string get_progress_bar(uint8_t);
 
-void BF::Util::Logger::PrintTorrentState(const BF::TorrentDownloadState& info) {
+void BF::Logger::PrintTorrentState(const BF::TorrentDownloadState& info) {
   std::cout << get_progress_bar(info.progress);
   std::cout << " " << unsigned(info.progress) << "%";
   std::cout << " | " << unsigned(info.total_downloaded) << " kB";

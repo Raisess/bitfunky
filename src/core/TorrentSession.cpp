@@ -39,7 +39,7 @@ void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent
 }
 
 void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
-  return Util::Util::Loop([this, callback]() {
+  return Util::Loop([this, callback]() {
     this->handle();
     callback();
   }, 200);

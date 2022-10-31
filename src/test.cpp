@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
     for (auto torrent : torrent_list) {
       std::cout << "Torrent: " << torrent->get_alias() << std::endl;
-      BF::Util::Logger::PrintTorrentState(torrent->state);
+      BF::Logger::PrintTorrentState(torrent->state);
     }
   });
 
