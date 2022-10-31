@@ -2,6 +2,8 @@
 
 A simple cli written in C++, using [cli-creator](https://github.com/Raisess/cli-creator).
 
+- NOTE: You need bitfunky installed before installing bitfunky-cli.
+
 ### Installing:
 
 - Only inside the cli folder root!

@@ -16,7 +16,7 @@ void print_header() {
   std::cout << "-----> BitFunky CLI" << std::endl << std::endl;
 }
 
-void print_fotter() {
+void print_footer() {
   std::cout << std::endl << "Thanks for using BitFunky @ Raisess" << std::endl;
 }
 
@@ -25,7 +25,7 @@ auto help = [](Arguments) {
   std::cout << "\t--torrent | -t: Download torrents" << std::endl;
   std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
   std::cout << "\t--help | -h: Show help" << std::endl;
-  print_fotter();
+  print_footer();
   return 0;
 };
 
@@ -55,7 +55,7 @@ auto download_torrent = [](Arguments args) {
         BF::Util::Logger::PrintTorrentState(torrent->state);
       }
 
-      print_fotter();
+      print_footer();
     });
 
     return 0;
