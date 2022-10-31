@@ -3,7 +3,9 @@ EXTERNAL_LIB_LINK=/usr/local/lib/libtorrent-rasterbar.so.2.0.8
 
 SRC_DIR=./src
 LIB_SRC=$(SRC_DIR)/core/TorrentDownload.cpp \
-				$(SRC_DIR)/core/TorrentSession.cpp
+				$(SRC_DIR)/core/TorrentSession.cpp \
+				$(SRC_DIR)/util/Logger.cpp \
+				$(SRC_DIR)/util/Util.cpp
 
 OUT_DIR=./build
 LIB_OUT=$(OUT_DIR)/bitfunky.so
