@@ -27,3 +27,11 @@ install:
 
 clean:
 	rm -rf $(OUT_DIR)
+
+auto:
+	make clean
+	make build
+	make install
+	make -C ./cli clean
+	make -C ./cli build
+	make -C ./cli install
