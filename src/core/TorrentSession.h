@@ -10,6 +10,8 @@ namespace BF {
 
 class TorrentSession {
 public:
+  static bool KeepRunning;
+
   TorrentSession();
   ~TorrentSession();
 
@@ -21,6 +23,10 @@ public:
 private:
   std::vector<std::shared_ptr<TorrentDownload>> queue;
   std::unique_ptr<lt::session> lt_session = nullptr;
+
+  static void HandleMainLoopInterrupt(int) {
+    TorrentSession::KeepRunning = false;
+  }
 };
 
 }

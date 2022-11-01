@@ -1,9 +1,12 @@
+#include <csignal>
 #include <iostream>
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/torrent_info.hpp>
 #include "../util/Util.h"
 #include "TorrentSession.h"
+
+bool BF::TorrentSession::KeepRunning = true;
 
 BF::TorrentSession::TorrentSession() {
   this->lt_session = std::make_unique<lt::session>();
@@ -12,6 +15,8 @@ BF::TorrentSession::TorrentSession() {
     std::cerr << "Error creating TorrentSession" << std::endl;
     exit(1);
   }
+
+  signal(SIGINT, TorrentSession::HandleMainLoopInterrupt);
 }
 
 BF::TorrentSession::~TorrentSession() {}
@@ -39,10 +44,11 @@ void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent
 }
 
 void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
-  return Util::Loop([this, callback]() {
+  while (TorrentSession::KeepRunning) {
     this->handle();
     callback();
-  }, 200);
+    Util::Sleep(200);
+  }
 }
 
 void BF::TorrentSession::handle() {
