@@ -3,6 +3,7 @@
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/torrent_flags.hpp>
 #include <libtorrent/torrent_info.hpp>
+#include "../util/File.h"
 #include "../util/Util.h"
 #include "TorrentSession.h"
 
@@ -51,6 +52,13 @@ void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
   }
 }
 
+void BF::TorrentSession::loop() {
+  while (TorrentSession::KeepRunning) {
+    this->handle();
+    Util::Sleep(200);
+  }
+}
+
 void BF::TorrentSession::handle() {
   for (auto torrent : this->queue) {
     const auto handler = torrent->get_torrent_handle();
@@ -84,5 +92,14 @@ void BF::TorrentSession::handle() {
       case TorrentDownloadState::Status::FAILED:
         break;
     }
+  }
+}
+
+void BF::TorrentSession::save_info() {
+  File f(SESSION_INFO_FILE);
+  f.write("");
+
+  for (auto torrent : this->queue) {
+    f.append(torrent->serialize());
   }
 }
