@@ -45,3 +45,20 @@ const std::string BF::TorrentDownload::get_input() const {
 const std::string BF::TorrentDownload::get_output() const {
   return this->output;
 }
+
+const std::string BF::TorrentDownload::serialize() const {
+  return "TorrentDownload:"
+    "\n\talias:" + this->alias +
+    "\n\tinput:" + this->input +
+    "\n\toutput:" + this->output +
+    "\n" + this->state.serialize() + "\n";
+}
+
+const std::string BF::TorrentDownloadState::serialize() const {
+  return "TorrentDownloadState:"
+    "\n\tstatus:" + std::to_string(this->status) +
+    "\n\tprogress:" + std::to_string(unsigned(this->progress)) +
+    "\n\tpeers:" + std::to_string(unsigned(this->peers)) +
+    "\n\tdownload_rate:" + std::to_string(unsigned(this->download_rate)) +
+    "\n\ttotal_downloaded:" + std::to_string(unsigned(this->total_downloaded)) + "\n";
+}
