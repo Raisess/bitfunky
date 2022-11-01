@@ -7,8 +7,6 @@
 #include "../util/Util.h"
 #include "TorrentSession.h"
 
-bool BF::TorrentSession::KeepRunning = true;
-
 BF::TorrentSession::TorrentSession() {
   this->lt_session = std::make_unique<lt::session>();
 
@@ -16,8 +14,6 @@ BF::TorrentSession::TorrentSession() {
     std::cerr << "Error creating TorrentSession" << std::endl;
     exit(1);
   }
-
-  signal(SIGINT, TorrentSession::HandleMainLoopInterrupt);
 }
 
 BF::TorrentSession::~TorrentSession() {}
@@ -41,21 +37,6 @@ void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& t
 void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<TorrentDownload>>& torrents) {
   for (auto torrent : torrents) {
     this->push_download(torrent);
-  }
-}
-
-void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
-  while (TorrentSession::KeepRunning) {
-    this->handle();
-    callback();
-    Util::Sleep(200);
-  }
-}
-
-void BF::TorrentSession::loop() {
-  while (TorrentSession::KeepRunning) {
-    this->handle();
-    Util::Sleep(200);
   }
 }
 
@@ -92,6 +73,17 @@ void BF::TorrentSession::handle() {
       case TorrentDownloadState::Status::FAILED:
         break;
     }
+  }
+}
+
+bool BF::TorrentSession::KeepRunning = true;
+void BF::TorrentSession::loop(const std::function<void(void)>& callback) {
+  signal(SIGINT, TorrentSession::HandleMainLoopInterrupt);
+
+  while (TorrentSession::KeepRunning) {
+    this->handle();
+    callback();
+    Util::Sleep(200);
   }
 }
 

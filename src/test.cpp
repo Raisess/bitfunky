@@ -1,6 +1,5 @@
 #include "core/TorrentDownload.h"
 #include "core/TorrentSession.h"
-#include "util/Logger.h"
 
 #define OUTPUT_DIR "./output"
 
@@ -20,7 +19,7 @@ int main(int argc, char* argv[]) {
 
   BF::TorrentSession session;
   session.push_download(torrent_list);
-  session.loop();
+  session.loop([]() {});
   session.save_info();
 
   return 0;

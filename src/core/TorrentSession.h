@@ -12,22 +12,20 @@ namespace BF {
 
 class TorrentSession {
 public:
-  static bool KeepRunning;
-
   TorrentSession();
   ~TorrentSession();
 
   void push_download(const std::shared_ptr<TorrentDownload>&);
   void push_download(const std::vector<std::shared_ptr<TorrentDownload>>&);
-  void loop(const std::function<void(void)>&);
-  void loop();
   void handle();
+  void loop(const std::function<void(void)>&);
   void save_info();
 
 private:
   std::vector<std::shared_ptr<TorrentDownload>> queue;
   std::unique_ptr<lt::session> lt_session = nullptr;
 
+  static bool KeepRunning;
   static void HandleMainLoopInterrupt(int) {
     TorrentSession::KeepRunning = false;
   }
