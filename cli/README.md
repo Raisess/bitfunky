@@ -1,10 +1,13 @@
 # BitFunky CLI
 
-A simple cli written in C++, using [cli-creator](https://github.com/Raisess/cli-creator).
+A simple cli written in C++.
 
-### Building and Installing:
+## Dependencies
 
-- NOTE: You need bitfunky installed before installing bitfunky-cli.
+- [bitfunky](https://github.com/Raisess/bitfunky)
+- [cli-creator](https://github.com/Raisess/cli-creator)
+
+## Building and Installing:
 
 ```shell
 make
@@ -13,14 +16,14 @@ make install
 
 Only inside the cli folder root!
 
-### How to use:
+## How to use:
 
 ```shell
 bitfunky --torrent=./path/file.torrent
 bitfunky --torrent=./path/file1.torrent,./path/file2.torrent
 ```
 
-### Uninstalling:
+## Uninstalling:
 
 ```shell
 make uninstall
