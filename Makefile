@@ -1,9 +1,12 @@
 CXX=clang++ -std=c++14
-EXTERNAL_LIB_LINK=/usr/local/lib/libtorrent-rasterbar.so.2.0.8
+EXTERNAL_LIB_LINK=/usr/local/lib/libtorrent-rasterbar.so.2.0.8 \
+									/usr/lib/libsqlite3.so.0.8.6
 
 SRC_DIR=./src
 LIB_SRC=$(SRC_DIR)/core/TorrentDownload.cpp \
 				$(SRC_DIR)/core/TorrentSession.cpp \
+				$(SRC_DIR)/core/MagnetDatabase.cpp \
+				$(SRC_DIR)/database/SqLite.cpp \
 				$(SRC_DIR)/util/File.cpp \
 				$(SRC_DIR)/util/Util.cpp
 

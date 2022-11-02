@@ -2,13 +2,14 @@
 
 A small BitTorrent client api.
 
-Made using [libtorrent](http://www.libtorrent.org/index.html).
+## Dependencies
+
+- [libtorrent](http://www.libtorrent.org/index.html)
+- [sqlite3](https://www.sqlite.org/index.html)
 
 ## Building and Installing
 
-- NOTE: You need libtorrent installed before building.
-
-To build the lib run this command on your terminal:
+After installed dependencies, build the lib running this command on your terminal:
 
 ```shell
 make

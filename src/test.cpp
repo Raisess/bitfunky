@@ -1,9 +1,15 @@
 #include "core/TorrentDownload.h"
 #include "core/TorrentSession.h"
+//#include "core/MagnetDatabase.h"
 
 #define OUTPUT_DIR "./output"
 
 int main(int argc, char* argv[]) {
+  /*BF::MagnetDatabase magnet_database;
+  auto magnet_uri = magnet_database.find("Sintel - Open Movie");
+  std::cout << "magnet_uri: " << magnet_uri << std::endl;
+  return 0;*/
+
   auto torrent_list = {
     BF::TorrentDownload::Create(
       "Sintel - Open Movie",
