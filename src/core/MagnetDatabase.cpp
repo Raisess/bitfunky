@@ -12,7 +12,19 @@ void BF::MagnetDatabase::Init() {
 }
 
 void BF::MagnetDatabase::Merge(const std::string& database_path) {
-  // TODO: load database and merge
+  SqLite target_db(database_path);
+  auto result = target_db.run("SELECT alias, magnet_uri, create_date FROM magnet");
+
+  SqLite db(DEFAULT_SQLITE_DATABASE);
+  for (size_t i = 0; i < result->data.size(); i += 3) {
+    db.run(
+      "INSERT INTO magnet(alias, magnet_uri, create_date) VALUES("
+        "\"" + result->data[i]     + "\"," +
+        "\"" + result->data[i + 1] + "\"," +
+        "\"" + result->data[i + 2] + "\""  +
+      ");"
+    );
+  }
 }
 
 BF::MagnetDatabase::MagnetDatabase() : db(DEFAULT_SQLITE_DATABASE) {}
