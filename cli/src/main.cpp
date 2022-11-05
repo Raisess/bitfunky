@@ -29,28 +29,9 @@ auto help = [](Arguments) {
   return 0;
 };
 
-auto search_magnet_db = [](Arguments args) {
-  if (args.size() == 0) {
-    std::cerr << "Invalid argument, no alias provided." << std::endl;
-    return 1;
-  }
-
-  print_header();
-  BF::MagnetDatabase magnet_db;
-  auto results = magnet_db.search(args[0]);
-  for (auto result : results) {
-    std::cout << "\t---> " << result.alias << " (" + result.create_date + "): " << result.magnet_uri << std::endl;
-  }
-  print_footer();
-
-  return 0;
-};
-
 auto init_magnet_db = [](Arguments) {
-  print_header();
   BF::MagnetDatabase::Init();
-  std::cout << "\t Magnet database initiated at: " << DEFAULT_SQLITE_DATABASE() << std::endl;
-  print_footer();
+  std::cout << "Magnet database initiated at: " << DEFAULT_SQLITE_DATABASE() << std::endl;
   return 0;
 };
 
@@ -60,14 +41,28 @@ auto merge_magnet_db = [](Arguments args) {
     return 1;
   }
 
-  print_header();
   BF::MagnetDatabase::Merge(args[0]);
-  std::cout << "\t Merge finished!" << std::endl;
-  print_footer();
+  std::cout << "Merge finished!" << std::endl;
   return 0;
 };
 
-void download(const std::vector<std::shared_ptr<BF::TorrentDownload>>&);
+auto search_magnet_db = [](Arguments args) {
+  if (args.size() == 0) {
+    std::cerr << "Invalid argument, no alias provided." << std::endl;
+    return 1;
+  }
+
+  BF::MagnetDatabase magnet_db;
+  auto results = magnet_db.search(args[0]);
+  for (auto result : results) {
+    std::cout << "---> " << result.alias << " (" + result.create_date + "): " << result.magnet_uri << std::endl;
+    std::cout << "-------------------------" << std::endl;
+  }
+
+  return 0;
+};
+
+void handle_download(const std::vector<std::shared_ptr<BF::TorrentDownload>>&);
 
 auto download_torrent = [](Arguments args) {
   if (args.size() == 0) {
@@ -81,7 +76,7 @@ auto download_torrent = [](Arguments args) {
   }
 
   try {
-    download(torrents);
+    handle_download(torrents);
     return 0;
   } catch (std::exception& err) {
     std::cerr << err.what() << std::endl;
@@ -103,7 +98,7 @@ auto download_magnet = [](Arguments args) {
   }
 
   try {
-    download(magnets);
+    handle_download(magnets);
     return 0;
   } catch (std::exception& err) {
     std::cerr << err.what() << std::endl;
@@ -130,7 +125,7 @@ int main(int argc, char* argv[]) {
   return cli.handle(argc, argv);
 }
 
-void download(const std::vector<std::shared_ptr<BF::TorrentDownload>>& downloads) {
+void handle_download(const std::vector<std::shared_ptr<BF::TorrentDownload>>& downloads) {
   BF::TorrentSession session;
   session.push_download(downloads);
 
