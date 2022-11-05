@@ -25,7 +25,7 @@ std::shared_ptr<BF::QueryResult> BF::SqLite::run(const std::string& sql) {
   auto res = sqlite3_exec(this->db, sql.c_str(), callback, (void*) query_result.get(), &err_msg);
 
   if (res != SQLITE_OK) {
-    std::cerr << "Query failed" << std::endl;
+    std::cerr << "Query failed: " << err_msg << std::endl;
     sqlite3_free(err_msg);
   }
 
