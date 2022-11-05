@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <bitfunky/core/MagnetDatabase.h>
 #include <bitfunky/core/TorrentDownload.h>
 #include <bitfunky/core/TorrentSession.h>
 #include <bitfunky/util/Util.h>
@@ -17,6 +18,24 @@ auto help = [](Arguments) {
   std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
   std::cout << "\t--help | -h: Show help" << std::endl;
   print_footer();
+  return 0;
+};
+
+auto search_magnet_db = [](Arguments args) {
+  if (args.size() == 0) {
+    std::cerr << "Invalid argument, no alias provided." << std::endl;
+    return 1;
+  }
+
+  BF::MagnetDatabase magnet_db;
+
+  print_header();
+  auto results = magnet_db.search(args[0]);
+  for (auto result : results) {
+    std::cout << "\t---> " << result.alias << " (" + result.create_date + "): " << result.magnet_uri << std::endl;
+  }
+  print_footer();
+
   return 0;
 };
 
@@ -47,6 +66,8 @@ int main(int argc, char* argv[]) {
 
   cli.commands["--help"] = help;
   cli.commands["-h"] = help;
+  cli.commands["--search-magnet"] = search_magnet_db;
+  cli.commands["-sm"] = search_magnet_db;
   cli.commands["--torrent"] = download_torrent;
   cli.commands["-t"] = download_torrent;
 
