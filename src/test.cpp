@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[]) {
   // BF::MagnetDatabase::Merge("magnet_database2.db");
-  // BF::MagnetDatabase::Init();
+  BF::MagnetDatabase::Init();
   BF::MagnetDatabase magnet_database;
   magnet_database.add("Leaves of Grass - by Walt Whitman", "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337");
   auto magnet = magnet_database.find("Sintel - Open Movie");
