@@ -67,11 +67,3 @@ const std::vector<BF::MagnetModel> BF::MagnetDatabase::search(const std::string&
 
   return model_vec;
 }
-
-std::shared_ptr<BF::TorrentDownload> BF::MagnetDatabase::torrent_from(
-  const std::string& alias,
-  const std::string& output = DEFAULT_OUTPUT_PATH
-) {
-  const auto magnet = this->find(alias);
-  return BF::TorrentDownload::Create(magnet.alias, magnet.magnet_uri, output);
-}

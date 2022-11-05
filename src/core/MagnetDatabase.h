@@ -4,10 +4,9 @@
 #include <memory>
 #include <vector>
 #include "../database/SqLite.h"
-#include "TorrentDownload.h"
+#include "../util/Util.h"
 
-#define DEFAULT_SQLITE_DATABASE "magnet_database.db"
-#define DEFAULT_OUTPUT_PATH "./Downloads"
+#define DEFAULT_SQLITE_DATABASE() BF::Util::Env("HOME") + "/.magnet_database.db"
 
 namespace BF {
 
@@ -27,22 +26,18 @@ public:
 
 class MagnetDatabase {
 public:
-  static void Init(const std::string& database_path = DEFAULT_SQLITE_DATABASE);
+  static void Init(const std::string& database_path = DEFAULT_SQLITE_DATABASE());
   static void Merge(
     const std::string& from_database_path,
-    const std::string& to_database_path = DEFAULT_SQLITE_DATABASE
+    const std::string& to_database_path = DEFAULT_SQLITE_DATABASE()
   );
 
-  MagnetDatabase(const std::string& database_path = DEFAULT_SQLITE_DATABASE);
+  MagnetDatabase(const std::string& database_path = DEFAULT_SQLITE_DATABASE());
   ~MagnetDatabase();
 
   void add(const std::string& alias, const std::string& magnet_uri);
   const MagnetModel find(const std::string& alias);
   const std::vector<MagnetModel> search(const std::string& like);
-  std::shared_ptr<BF::TorrentDownload> torrent_from(
-    const std::string& alias,
-    const std::string& output
-  );
 
 private:
   SqLite db;
