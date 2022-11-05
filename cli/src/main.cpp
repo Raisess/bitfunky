@@ -14,8 +14,16 @@ using namespace CliCreator;
 
 auto help = [](Arguments) {
   print_header();
-  std::cout << "\t--torrent | -t: Download torrents" << std::endl;
+  std::cout << "\t--torrent | -t: Download torrent from a `.torrent` file" << std::endl;
   std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
+  std::cout << "\t--magnet | -m: Download torrent from a `magnet-uri` at your magnet database" << std::endl;
+  std::cout << "\t\tE.g.: --magnet=some-alias" << std::endl;
+  std::cout << "\t--init-magnet | -im: Init a magnet database at `$HOME/.magnet_database.db`" << std::endl;
+  std::cout << "\t\tE.g.: --init-magnet" << std::endl;
+  std::cout << "\t--search-magnet | -sm: Search for matchs into magnet database" << std::endl;
+  std::cout << "\t\tE.g.: --search-magnet=some-alias" << std::endl;
+  std::cout << "\t--merge-magnet | -mm: Merge another magnet database into you current magnet database" << std::endl;
+  std::cout << "\t\tE.g.: --merge-magnet=./path/another_magnet_database.db" << std::endl;
   std::cout << "\t--help | -h: Show help" << std::endl;
   print_footer();
   return 0;
