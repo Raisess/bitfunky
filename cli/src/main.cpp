@@ -61,6 +61,28 @@ auto download_torrent = [](Arguments args) {
   }
 };
 
+auto download_magnet = [](Arguments args) {
+  if (args.size() == 0) {
+    std::cerr << "Invalid argument, no alias provided." << std::endl;
+    return 1;
+  }
+
+  BF::MagnetDatabase magnet_db;
+  std::vector<std::shared_ptr<BF::TorrentDownload>> magnets = {};
+  for (auto arg : args) {
+    auto result = magnet_db.find(arg);
+    magnets.push_back(BF::TorrentDownload::Create(result.alias, result.magnet_uri, DEFAULT_OUTPUT_PATH()));
+  }
+
+  try {
+    download(magnets);
+    return 0;
+  } catch (std::exception& err) {
+    std::cerr << err.what() << std::endl;
+    return 1;
+  }
+};
+
 int main(int argc, char* argv[]) {
   Cli cli;
 
@@ -70,6 +92,8 @@ int main(int argc, char* argv[]) {
   cli.commands["-sm"] = search_magnet_db;
   cli.commands["--torrent"] = download_torrent;
   cli.commands["-t"] = download_torrent;
+  cli.commands["--magnet"] = download_magnet;
+  cli.commands["-m"] = download_magnet;
 
   return cli.handle(argc, argv);
 }
