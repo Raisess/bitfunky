@@ -22,8 +22,10 @@ build-test:
 
 install:
 	sudo mkdir -p /usr/local/include/bitfunky/core
+	sudo mkdir -p /usr/local/include/bitfunky/database
 	sudo mkdir -p /usr/local/include/bitfunky/util
 	sudo cp -r ./src/core/*.h /usr/local/include/bitfunky/core
+	sudo cp -r ./src/database/*.h /usr/local/include/bitfunky/database
 	sudo cp -r ./src/util/*.h /usr/local/include/bitfunky/util
 	sudo cp $(LIB_OUT) /usr/local/lib
 

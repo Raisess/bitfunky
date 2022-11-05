@@ -1,6 +1,6 @@
 # BitFunky
 
-A small BitTorrent client api.
+A small BitTorrent client API and CLI.
 
 ## Dependencies
 
@@ -21,7 +21,7 @@ To install:
 make install
 ```
 
-- Installed shared object path: `/usr/local/lib/bitfunky.so`
+- Installed shared object path: `/usr/local/lib/bitfunky.so`.
 
 ## Official Clients
 
@@ -33,3 +33,9 @@ You can check how to install and use the cli here: [./cli/README.md](./cli/READM
 ### GUI
 
 - TODO
+
+## Features
+
+- Download torrents from `.torrent` files and `magnet` links;
+- TODO: Upload torrens;
+- Magnet database, manage locally stored magnet links to create downloads.
