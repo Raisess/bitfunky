@@ -37,5 +37,5 @@ You can check how to install and use the cli here: [./cli/README.md](./cli/READM
 ## Features
 
 - Download torrents from `.torrent` files and `magnet` links;
-- TODO: Upload torrens;
+- TODO: Create torrents from file directories;
 - Magnet database, manage locally stored magnet links to create downloads.
