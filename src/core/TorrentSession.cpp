@@ -18,7 +18,7 @@ BF::TorrentSession::TorrentSession() {
 
 BF::TorrentSession::~TorrentSession() {}
 
-void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& torrent) {
+void BF::TorrentSession::push_download(const std::shared_ptr<Torrent>& torrent) {
   if (torrent->is_magnet()) {
     auto add_torrent_params = lt::parse_magnet_uri(torrent->get_input());
     add_torrent_params.save_path = torrent->get_output();
@@ -30,11 +30,11 @@ void BF::TorrentSession::push_download(const std::shared_ptr<TorrentDownload>& t
     torrent->set_torrent_handle(std::move(handler));
   }
 
-  torrent->state.status = TorrentDownloadState::Status::ACTIVE;
+  torrent->state.status = TorrentState::Status::ACTIVE;
   this->queue.push_back(torrent);
 }
 
-void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<TorrentDownload>>& torrents) {
+void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent>>& torrents) {
   for (auto torrent : torrents) {
     this->push_download(torrent);
   }
@@ -53,26 +53,26 @@ void BF::TorrentSession::handle() {
     torrent->state.peers = status.num_peers;
 
     switch (torrent->state.status) {
-      case TorrentDownloadState::Status::ACTIVE:
+      case TorrentState::Status::ACTIVE:
         if (status.is_finished) {
-          torrent->state.status = TorrentDownloadState::Status::FINISHED;
+          torrent->state.status = TorrentState::Status::FINISHED;
         }
         handler.unset_flags(lt::torrent_flags::paused);
         break;
-      case TorrentDownloadState::Status::PAUSED:
+      case TorrentState::Status::PAUSED:
         handler.set_flags(lt::torrent_flags::paused);
         break;
-      case TorrentDownloadState::Status::FINISHED:
+      case TorrentState::Status::FINISHED:
         if (status.is_seeding) {
-          torrent->state.status = TorrentDownloadState::Status::SEEDING;
+          torrent->state.status = TorrentState::Status::SEEDING;
         }
         break;
       // TODO: Sedding state status update
-      case TorrentDownloadState::Status::SEEDING:
+      case TorrentState::Status::SEEDING:
         break;
       // Do nothing states
-      case TorrentDownloadState::Status::CREATED:
-      case TorrentDownloadState::Status::FAILED:
+      case TorrentState::Status::CREATED:
+      case TorrentState::Status::FAILED:
         break;
     }
   }

@@ -17,7 +17,7 @@ static std::string get_progress_bar(uint8_t progress) {
 
 #define ALIAS_MAX_PRINT_SIZE 30
 
-void print_torrent_info(const std::string& alias, const BF::TorrentDownloadState& state) {
+void print_torrent_info(const std::string& alias, const BF::TorrentState& state) {
   std::cout << (alias.size() <= ALIAS_MAX_PRINT_SIZE ? alias : alias.substr(0, ALIAS_MAX_PRINT_SIZE) + "...");
   std::cout << " ";
   std::cout << get_progress_bar(state.progress);

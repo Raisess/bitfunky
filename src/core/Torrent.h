@@ -6,7 +6,7 @@
 
 namespace BF {
 
-class TorrentDownloadState {
+class TorrentState {
 public:
   enum Status {
     FAILED = 0,
@@ -22,19 +22,19 @@ public:
   uint16_t peers = 0;
   uint64_t download_rate = 0; // in kB
   uint64_t total_downloaded = 0; // in kB
-                                 //
+
   const std::string serialize() const;
 };
 
-class TorrentDownload {
+class Torrent {
 public:
-  static std::shared_ptr<TorrentDownload> Create(const std::string& alias, const std::string& input, const std::string& output);
+  static std::shared_ptr<Torrent> Create(const std::string& alias, const std::string& input, const std::string& output);
   static const bool IsMagnet(const std::string& uri);
 
-  TorrentDownloadState state;
+  TorrentState state;
 
-  TorrentDownload(const std::string& alias, const std::string& input, const std::string& output);
-  ~TorrentDownload();
+  Torrent(const std::string& alias, const std::string& input, const std::string& output);
+  ~Torrent();
 
   lt::torrent_handle get_torrent_handle() const;
   void set_torrent_handle(const lt::torrent_handle&);

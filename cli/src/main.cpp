@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 #include <bitfunky/core/MagnetDatabase.h>
-#include <bitfunky/core/TorrentDownload.h>
 #include <bitfunky/core/TorrentSession.h>
+#include <bitfunky/core/Torrent.h>
 #include <bitfunky/util/Util.h>
 #include <cli-creator/Cli.h>
 #include "print.h"
@@ -62,7 +62,7 @@ auto search_magnet_db = [](Arguments args) {
   return 0;
 };
 
-void handle_download(const std::vector<std::shared_ptr<BF::TorrentDownload>>&);
+void handle_download(const std::vector<std::shared_ptr<BF::Torrent>>&);
 
 auto download_torrent = [](Arguments args) {
   if (args.size() == 0) {
@@ -70,9 +70,9 @@ auto download_torrent = [](Arguments args) {
     return 1;
   }
 
-  std::vector<std::shared_ptr<BF::TorrentDownload>> torrents = {};
+  std::vector<std::shared_ptr<BF::Torrent>> torrents = {};
   for (auto arg : args) {
-    torrents.push_back(BF::TorrentDownload::Create(arg, arg, DEFAULT_OUTPUT_PATH()));
+    torrents.push_back(BF::Torrent::Create(arg, arg, DEFAULT_OUTPUT_PATH()));
   }
 
   try {
@@ -91,10 +91,10 @@ auto download_magnet = [](Arguments args) {
   }
 
   BF::MagnetDatabase magnet_db;
-  std::vector<std::shared_ptr<BF::TorrentDownload>> magnets = {};
+  std::vector<std::shared_ptr<BF::Torrent>> magnets = {};
   for (auto arg : args) {
     auto result = magnet_db.find(arg);
-    magnets.push_back(BF::TorrentDownload::Create(result.alias, result.magnet_uri, DEFAULT_OUTPUT_PATH()));
+    magnets.push_back(BF::Torrent::Create(result.alias, result.magnet_uri, DEFAULT_OUTPUT_PATH()));
   }
 
   try {
@@ -125,7 +125,7 @@ int main(int argc, char* argv[]) {
   return cli.handle(argc, argv);
 }
 
-void handle_download(const std::vector<std::shared_ptr<BF::TorrentDownload>>& downloads) {
+void handle_download(const std::vector<std::shared_ptr<BF::Torrent>>& downloads) {
   BF::TorrentSession session;
   session.push_download(downloads);
 
