@@ -4,6 +4,7 @@ EXTERNAL_LIB_LINK=/usr/local/lib/libtorrent-rasterbar.so.2.0.8 \
 
 SRC_DIR=./src
 LIB_SRC=$(SRC_DIR)/core/Torrent.cpp \
+				$(SRC_DIR)/core/TorrentMaker.cpp \
 				$(SRC_DIR)/core/TorrentSession.cpp \
 				$(SRC_DIR)/core/MagnetDatabase.cpp \
 				$(SRC_DIR)/database/SqLite.cpp \
