@@ -57,7 +57,7 @@ const BF::MagnetModel BF::MagnetDatabase::find(const std::string& alias) {
 const std::vector<BF::MagnetModel> BF::MagnetDatabase::search(const std::string& like) {
   const std::string where = "alias LIKE \"%" + like + "%\"";
   auto result = this->db.run(
-    "SELECT alias, magnet_uri, create_date FROM magnets WHERE " + where + ";"
+    "SELECT alias, magnet_uri, create_date FROM magnets WHERE " + where + " LIMIT " + std::to_string(DEFAULT_SEARCH_LIMIT) + ";"
   );
 
   std::vector<BF::MagnetModel> model_vec;

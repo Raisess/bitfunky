@@ -7,6 +7,7 @@
 #include "../util/Util.h"
 
 #define DEFAULT_SQLITE_DATABASE() BF::Util::Env("HOME") + "/.magnet_database.db"
+#define DEFAULT_SEARCH_LIMIT 100
 
 namespace BF {
 
