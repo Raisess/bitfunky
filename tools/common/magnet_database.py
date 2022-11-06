@@ -8,10 +8,13 @@ class MagnetDatabase:
     self.db.close()
 
   def add(self, items: list[dict[str, str]]) -> None:
-    for item in items:
-      self.db.execute(
-        "INSERT INTO magnets(alias, magnet_uri) VALUES(?, ?)",
-        [item["alias"], item["magnet_uri"]]
-      )
+    try:
+      for item in items:
+        self.db.execute(
+          "INSERT INTO magnets(alias, magnet_uri) VALUES(?, ?)",
+          [item["alias"], item["magnet_uri"]]
+        )
 
-    self.db.commit()
+      self.db.commit()
+    except:
+      self.db.rollback()
