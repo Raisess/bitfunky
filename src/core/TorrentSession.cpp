@@ -42,6 +42,8 @@ void BF::TorrentSession::push_download(const std::vector<std::shared_ptr<Torrent
 
 void BF::TorrentSession::handle() {
   for (auto torrent : this->queue) {
+    if (torrent == nullptr) continue;
+
     const auto handler = torrent->get_torrent_handle();
     const auto status = handler.status();
 
