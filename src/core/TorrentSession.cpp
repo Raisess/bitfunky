@@ -2,6 +2,7 @@
 #include <iostream>
 #include <libtorrent/load_torrent.hpp>
 #include <libtorrent/magnet_uri.hpp>
+#include <libtorrent/torrent_handle.hpp>
 #include "../util/File.h"
 #include "../util/Util.h"
 #include "TorrentSession.h"
@@ -23,7 +24,7 @@ void BF::TorrentSession::push_download(const std::shared_ptr<Torrent>& torrent) 
     : lt::load_torrent_file(torrent->get_input());
   add_torrent_params.save_path = torrent->get_output();
   auto handler = this->lt_session->add_torrent(std::move(add_torrent_params));
-  torrent->set_torrent_handle(std::move(handler));
+  torrent->handler = std::make_unique<lt::torrent_handle>(std::move(handler));
 
   torrent->state.status = TorrentState::Status::ACTIVE;
   this->queue.push_back(torrent);
@@ -39,9 +40,7 @@ void BF::TorrentSession::handle() {
   for (auto torrent : this->queue) {
     if (torrent == nullptr) continue;
 
-    const auto handler = torrent->get_torrent_handle();
-    const auto status = handler.status();
-
+    const auto status = torrent->handler->status();
     torrent->state.progress = status.progress_ppm / 10000;
     torrent->state.total_downloaded = status.total_done / 1000;
     torrent->state.download_rate = status.download_payload_rate / 1000;
@@ -52,10 +51,10 @@ void BF::TorrentSession::handle() {
         if (status.is_finished) {
           torrent->state.status = TorrentState::Status::FINISHED;
         }
-        handler.unset_flags(lt::torrent_flags::paused);
+        torrent->handler->unset_flags(lt::torrent_flags::paused);
         break;
       case TorrentState::Status::PAUSED:
-        handler.set_flags(lt::torrent_flags::paused);
+        torrent->handler->set_flags(lt::torrent_flags::paused);
         break;
       case TorrentState::Status::FINISHED:
         if (status.is_seeding) {

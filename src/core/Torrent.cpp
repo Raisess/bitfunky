@@ -22,14 +22,6 @@ BF::Torrent::Torrent(
 
 BF::Torrent::~Torrent() {}
 
-lt::torrent_handle BF::Torrent::get_torrent_handle() const {
-  return this->lt_torrent_handle;
-}
-
-void BF::Torrent::set_torrent_handle(const lt::torrent_handle& torrent_handle) {
-  this->lt_torrent_handle = torrent_handle;
-}
-
 const bool BF::Torrent::is_magnet() const {
   return Torrent::IsMagnet(this->input);
 }

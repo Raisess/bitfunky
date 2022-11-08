@@ -31,13 +31,11 @@ public:
   static std::shared_ptr<Torrent> Create(const std::string& alias, const std::string& input, const std::string& output);
   static const bool IsMagnet(const std::string& uri);
 
+  std::unique_ptr<lt::torrent_handle> handler = nullptr;
   TorrentState state;
 
   Torrent(const std::string& alias, const std::string& input, const std::string& output);
   ~Torrent();
-
-  lt::torrent_handle get_torrent_handle() const;
-  void set_torrent_handle(const lt::torrent_handle&);
 
   const bool is_magnet() const;
   const std::string get_alias() const;
@@ -49,8 +47,6 @@ private:
   std::string alias;
   std::string input;
   std::string output;
-
-  lt::torrent_handle lt_torrent_handle;
 };
 
 }

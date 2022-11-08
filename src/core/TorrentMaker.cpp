@@ -6,7 +6,7 @@
 #include "../util/File.h"
 #include "TorrentMaker.h"
 
-BF::Torrent BF::TorrentMaker::Make(const TorrentMaker& maker) {
+void BF::TorrentMaker::Make(const TorrentMaker& maker) {
   lt::file_storage fs;
   lt::add_files(fs, maker.file_path);
 
@@ -28,8 +28,6 @@ BF::Torrent BF::TorrentMaker::Make(const TorrentMaker& maker) {
   const auto output_path = maker.name + ".torrent";
   BF::File file(output_path);
   file.write(std::string(t_vec.data()));
-
-  return BF::Torrent(maker.name, output_path, ".");
 }
 
 const std::string BF::TorrentMaker::FromTorrentToMagnet(const std::string& file_path) {
