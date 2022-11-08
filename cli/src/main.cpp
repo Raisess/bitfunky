@@ -4,11 +4,10 @@
 #include <bitfunky/core/MagnetDatabase.h>
 #include <bitfunky/core/TorrentSession.h>
 #include <bitfunky/core/Torrent.h>
-#include <bitfunky/util/Util.h>
 #include <cli-creator/Cli.h>
 #include "print.h"
 
-#define DEFAULT_OUTPUT_PATH() BF::Util::Env("HOME") + "/Downloads"
+#define DEFAULT_OUTPUT_PATH "."
 
 using namespace CliCreator;
 
@@ -72,7 +71,7 @@ auto download_torrent = [](Arguments args) {
 
   std::vector<std::shared_ptr<BF::Torrent>> torrents = {};
   for (auto arg : args) {
-    torrents.push_back(BF::Torrent::Create(arg, arg, DEFAULT_OUTPUT_PATH()));
+    torrents.push_back(BF::Torrent::Create(arg, arg, DEFAULT_OUTPUT_PATH));
   }
 
   try {
@@ -94,7 +93,7 @@ auto download_magnet = [](Arguments args) {
   std::vector<std::shared_ptr<BF::Torrent>> magnets = {};
   for (auto arg : args) {
     auto result = magnet_db.find(arg);
-    magnets.push_back(BF::Torrent::Create(result.alias, result.magnet_uri, DEFAULT_OUTPUT_PATH()));
+    magnets.push_back(BF::Torrent::Create(result.alias, result.magnet_uri, DEFAULT_OUTPUT_PATH));
   }
 
   try {
