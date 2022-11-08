@@ -1,6 +1,8 @@
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/create_torrent.hpp>
 #include <libtorrent/file_storage.hpp>
+#include <libtorrent/magnet_uri.hpp>
+#include <libtorrent/torrent_info.hpp>
 #include "../util/File.h"
 #include "TorrentMaker.h"
 
@@ -28,6 +30,11 @@ BF::Torrent BF::TorrentMaker::Make(const TorrentMaker& maker) {
   file.write(std::string(t_vec.data()));
 
   return BF::Torrent(maker.name, output_path, ".");
+}
+
+const std::string BF::TorrentMaker::FromTorrentToMagnet(const std::string& file_path) {
+  const auto torrent_info = lt::torrent_info(file_path);
+  return lt::make_magnet_uri(torrent_info);
 }
 
 BF::TorrentMaker::TorrentMaker(

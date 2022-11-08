@@ -9,6 +9,7 @@ namespace BF {
 class TorrentMaker {
 public:
   static Torrent Make(const TorrentMaker&);
+  static const std::string FromTorrentToMagnet(const std::string& file_path);
 
   // Only accept directories paths
   TorrentMaker(
