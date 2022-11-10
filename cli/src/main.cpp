@@ -137,5 +137,6 @@ void handle_download(const std::vector<std::shared_ptr<BF::Torrent>>& downloads)
     }
 
     print_footer();
+    std::cout.flush();
   });
 }
