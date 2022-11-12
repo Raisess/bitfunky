@@ -19,8 +19,8 @@ Only inside the cli folder root!
 ## How to use:
 
 ```shell
-bitfunky --torrent=./path/file.torrent
-bitfunky --torrent=./path/file1.torrent,./path/file2.torrent
+bitfunky torrent ./path/file.torrent
+bitfunky torrent ./path/file1.torrent ./path/file2.torrent
 ```
 
 ## Uninstalling:
@@ -33,44 +33,44 @@ Only inside the cli folder root!
 
 ## Commands
 
-#### `--torrent / -t`:
+#### `torrent / -t`:
 
 - Download torrent from a `.torrent` file:
 
 ```shell
-bitfunky --torrent=./path/file.torrent,./path/file.torrent
+bitfunky torrent ./path/file.torrent ./path/file.torrent
 ```
 
-#### `--magnet / -m`:
+#### `magnet / -m`:
 
 - Download torrent from a `magnet-uri` at your magnet database:
 
 ```shell
-bitfunky --magnet=some-alias
+bitfunky magnet some-alias
 ```
 
-#### `--init-magnet / -im`:
+#### `init-magnet / -im`:
 
 - Init a magnet database at `$HOME/.magnet_database.db`:
 
 ```shell
-bitfunky --init-magnet
+bitfunky init-magnet
 ```
 
-#### `--search-magnet / -sm`:
+#### `search-magnet / -sm`:
 
 - Search for matchs into magnet database:
 
 ```shell
-bitfunky --search-magnet=some-alias
+bitfunky search-magnet some-alias
 ```
 
-#### `--merge-magnet / -mm`:
+#### `merge-magnet / -mm`:
 
 - Merge another magnet database into you current magnet database:
 
 ```shell
-bitfunky --merge-magnet=./path/another_magnet_database.db
+bitfunky merge-magnet ./path/another_magnet_database.db
 ```
 
 That is all.

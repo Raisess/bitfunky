@@ -13,17 +13,17 @@ using namespace CliCreator;
 
 auto help = [](Arguments) {
   print_header();
-  std::cout << "\t--torrent | -t: Download torrent from a `.torrent` file" << std::endl;
-  std::cout << "\t\tE.g.: --torrent=/path/file.torrent,/path/file.torrent" << std::endl;
-  std::cout << "\t--magnet | -m: Download torrent from a `magnet-uri` at your magnet database" << std::endl;
-  std::cout << "\t\tE.g.: --magnet=some-alias" << std::endl;
-  std::cout << "\t--init-magnet | -im: Init a magnet database at `$HOME/.magnet_database.db`" << std::endl;
-  std::cout << "\t\tE.g.: --init-magnet" << std::endl;
-  std::cout << "\t--search-magnet | -sm: Search for matchs into magnet database" << std::endl;
-  std::cout << "\t\tE.g.: --search-magnet=some-alias" << std::endl;
-  std::cout << "\t--merge-magnet | -mm: Merge another magnet database into you current magnet database" << std::endl;
-  std::cout << "\t\tE.g.: --merge-magnet=./path/another_magnet_database.db" << std::endl;
-  std::cout << "\t--help | -h: Show help" << std::endl;
+  std::cout << "\ttorrent | -t: Download torrent from a `.torrent` file" << std::endl;
+  std::cout << "\t\tE.g.: torrent=./path/file.torrent ./path/file.torrent" << std::endl;
+  std::cout << "\tmagnet | -m: Download torrent from a `magnet-uri` at your magnet database" << std::endl;
+  std::cout << "\t\tE.g.: magnet=some-alias" << std::endl;
+  std::cout << "\tinit-magnet | -im: Init a magnet database at `$HOME/.magnet_database.db`" << std::endl;
+  std::cout << "\t\tE.g.: init-magnet" << std::endl;
+  std::cout << "\tsearch-magnet | -sm: Search for matchs into magnet database" << std::endl;
+  std::cout << "\t\tE.g.: search-magnet=some-alias" << std::endl;
+  std::cout << "\tmerge-magnet | -mm: Merge another magnet database into you current magnet database" << std::endl;
+  std::cout << "\t\tE.g.: merge-magnet=./path/another_magnet_database.db" << std::endl;
+  std::cout << "\thelp | -h: Show help" << std::endl;
   print_footer();
   return 0;
 };
@@ -108,17 +108,17 @@ auto download_magnet = [](Arguments args) {
 int main(int argc, char* argv[]) {
   Cli cli;
 
-  cli.commands["--help"] = help;
+  cli.commands["help"] = help;
   cli.commands["-h"] = help;
-  cli.commands["--init-magnet"] = init_magnet_db;
+  cli.commands["init-magnet"] = init_magnet_db;
   cli.commands["-im"] = init_magnet_db;
-  cli.commands["--merge-magnet"] = merge_magnet_db;
+  cli.commands["merge-magnet"] = merge_magnet_db;
   cli.commands["-mm"] = merge_magnet_db;
-  cli.commands["--search-magnet"] = search_magnet_db;
+  cli.commands["search-magnet"] = search_magnet_db;
   cli.commands["-sm"] = search_magnet_db;
-  cli.commands["--torrent"] = download_torrent;
+  cli.commands["torrent"] = download_torrent;
   cli.commands["-t"] = download_torrent;
-  cli.commands["--magnet"] = download_magnet;
+  cli.commands["magnet"] = download_magnet;
   cli.commands["-m"] = download_magnet;
 
   return cli.handle(argc, argv);
