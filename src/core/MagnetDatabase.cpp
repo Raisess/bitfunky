@@ -4,9 +4,9 @@ void BF::MagnetDatabase::Init(const std::string& database_path) {
   SqLite db(database_path);
   db.run(
     "CREATE TABLE magnets("
-    "  alias       VARCHAR(255) UNIQUE,"
-    "  magnet_uri  TEXT         UNIQUE,"
-    "  create_date VARCHAR(25)  DEFAULT(datetime('now'))"
+    "  alias       VARCHAR(255),"
+    "  magnet_uri  TEXT        UNIQUE,"
+    "  create_date VARCHAR(25) DEFAULT(datetime('now'))"
     ");"
   );
 }
@@ -15,19 +15,19 @@ void BF::MagnetDatabase::Merge(
   const std::string& from_database_path,
   const std::string& to_database_path
 ) {
+  SqLite db(to_database_path);
   SqLite target_db(from_database_path);
   auto result = target_db.run("SELECT alias, magnet_uri, create_date FROM magnets");
 
-  SqLite db(to_database_path);
+  std::string values_sql;
   for (size_t i = 0; i < result->data.size(); i += 3) {
-    db.run(
-      "INSERT INTO magnets(alias, magnet_uri, create_date) VALUES("
-        "\"" + result->data[i]     + "\"," +
-        "\"" + result->data[i + 1] + "\"," +
-        "\"" + result->data[i + 2] + "\""  +
-      ");"
-    );
+    values_sql += "(\"" + result->data[i]     + "\"," +
+                  "\"" + result->data[i + 1] + "\"," +
+                  "\"" + result->data[i + 2] + "\"" +
+                  (i == (result->data.size() - 3) ? ");" : "),");
   }
+
+  db.run("INSERT INTO magnets(alias, magnet_uri, create_date) VALUES" + values_sql);
 }
 
 BF::MagnetDatabase::MagnetDatabase(const std::string& database_path)
